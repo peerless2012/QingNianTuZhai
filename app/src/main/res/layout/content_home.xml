@@ -13,7 +13,8 @@
     tools:showIn="@layout/app_bar_home"
     tools:context=".HomeActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/get_info"
         android:text="Hello World!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
