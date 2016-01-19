@@ -1,16 +1,27 @@
 package com.peerless2012.qingniantuzhai.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Administrator on 2016/1/18.
  */
 public class ArticleItem {
 
+    @Expose
+    @SerializedName("dateTime")
     private long dateTime;
 
+    @Expose
+    @SerializedName("url")
     private String url;
 
+    @Expose
+    @SerializedName("title")
     private String title;
 
+    @Expose
+    @SerializedName("previewImgUrl")
     private String previewImgUrl;
 
     public long getDateTime() {

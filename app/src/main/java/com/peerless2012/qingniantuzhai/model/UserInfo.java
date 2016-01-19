@@ -1,4 +1,4 @@
-package com.peerless2012.qingniantuzhai;
+package com.peerless2012.qingniantuzhai.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
