@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="home_adapter_id_tag" type="id"/>
+    <item name="home_adapter_position_tag" type="id"/>
+    <item name="home_adapter_tag" type="id"/>
+</resources>

@@ -1,49 +1,72 @@
-package com.peerless2012.qingniantuzhai;
+package com.peerless2012.qingniantuzhai.activity;
 
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.peerless2012.qingniantuzhai.R;
+import com.peerless2012.qingniantuzhai.interfaces.OnItemClickListener;
+import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
-import com.peerless2012.qingniantuzhai.net.NetWorkService;
-
+import com.peerless2012.qingniantuzhai.utils.FileUtils;
+import com.peerless2012.qingniantuzhai.view.adapter.ArticleListAdapter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.IOException;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.GsonConverterFactory;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-public class HomeActivity extends AppCompatActivity
+public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    private RecyclerView homeRecycleView;
 
+    private ArticleListAdapter articleListAdapter;
+    @Override
+    protected int getContentLayout() {
+        return R.layout.activity_home;
+    }
+
+    @Override
+    protected void initView() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        homeRecycleView = getView(R.id.article_list);
+        homeRecycleView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL,false));
+        homeRecycleView.setHasFixedSize(true);
+        articleListAdapter = new ArticleListAdapter();
+        homeRecycleView.setAdapter(articleListAdapter);
+    }
+
+    @Override
+    protected void initListener() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,17 +76,71 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        articleListAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View parent, View view, int position, long id) {
+                ArticleItem articleItem = (ArticleItem) articleListAdapter.getItem(position);
+                DetailActivity.launch(HomeActivity.this,articleItem);
+            }
+        });
+    }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    private String baseUrl = "http://www.qingniantuzhai.com/home";
+    private Subscription subscribe;
+    @Override
+    protected void initData() {
+        subscribe = Observable.just(baseUrl)
+                .map(new Func1<String, List<ArticleItem>>() {
+                    @Override
+                    public List<ArticleItem> call(String urlStr) {
+                        ArrayList<ArticleItem> list = new ArrayList<ArticleItem>();
+                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                        String readJson = FileUtils.readJson(cacheDir, urlStr);
+                        if (readJson != null) {
+                            return gson.fromJson(readJson,new TypeToken<List<ArticleItem>>(){}.getType());
+                        }
+                        try {
+                            URL url = new URL(urlStr);
 
+                            Document document = Jsoup.parse(url, 5000);
+                            Elements rowElements = document.getElementsByClass("row");
+                            for (int i = 1; i < rowElements.size(); i++) {
+                                Element rowElement = rowElements.get(i);
+                                ArticleItem item = new ArticleItem();
 
-        findViewById(R.id.get_info).setOnClickListener(this);
+                                Element imgElement = rowElement.getElementsByClass("col-md-5").first();
+                                Element img = imgElement.select("img").first();
+                                item.setPreviewImgUrl(img.attr("data-src"));
+
+                                Element articleElement = rowElement.getElementsByClass("col-md-7").first();
+                                Element articleLink = articleElement.select("a").first();
+                                item.setUrl(articleLink.attr("href"));
+                                String title = articleLink.html();
+                                item.setTitle(title.substring(12, title.length() - 14));
+
+                                list.add(item);
+                            }
+                            FileUtils.saveJson(cacheDir,gson.toJson(list,new TypeToken<List<ArticleItem>>(){}.getType()), url.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return list;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<ArticleItem>>() {
+                    @Override
+                    public void call(List<ArticleItem> articleItems) {
+                        articleListAdapter.addData(articleItems);
+                    }
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        subscribe.unsubscribe();
+        super.onDestroy();
     }
 
     @Override
@@ -78,7 +155,6 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
@@ -123,7 +199,6 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    private String baseUrl = "http://192.168.31.213:8080";
     @Override
     public void onClick(View v) {
 //        OkHttpClient client = new OkHttpClient();
@@ -234,8 +309,9 @@ public class HomeActivity extends AppCompatActivity
                         Element articleLink = articleElement.select("a").first();
                         item.setUrl(articleLink.attr("href"));
                         String title = articleLink.html();
-                        item.setTitle(title.substring(12,title.length() - 14));
-
+                        item.setTitle(title.substring(12, title.length() - 14));
+                        Gson gson = new Gson();
+                        FileUtils.saveJson(cacheDir,gson.toJson(list),url.toString());
                         list.add(item);
                     }
                     for (ArticleItem articleItem:list) {

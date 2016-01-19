@@ -1,6 +1,6 @@
 package com.peerless2012.qingniantuzhai.net;
 
-import com.peerless2012.qingniantuzhai.UserInfo;
+import com.peerless2012.qingniantuzhai.model.UserInfo;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

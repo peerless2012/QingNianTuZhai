@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="horizontal"
+    card_view:elevation="5dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardBackgroundColor="#ffffff"
+    card_view:cardCornerRadius="5dp" >
+<LinearLayout
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:padding="8dp"
+              android:layout_height="120dp"
+              android:foreground="?android:attr/selectableItemBackground">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:src="@drawable/loading_01"
+        android:id="@+id/article_preview_img"
+        android:layout_gravity="center_vertical"
+        android:layout_width="150dp"
+        android:layout_height="100dp"/>
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:id="@+id/article_tile"
+        android:textSize="18sp"
+        android:text="青年图摘0118"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+    </android.support.v7.widget.CardView>
