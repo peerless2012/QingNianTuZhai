@@ -2,19 +2,22 @@ package com.peerless2012.qingniantuzhai.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.peerless2012.qingniantuzhai.R;
-
 import java.io.File;
 
 /**
- * Created by Administrator on 2016/1/19.
- */
+* @Author peerless2012
+* @Email peerless2012@126.com
+* @DateTime 2016/1/15 19:08
+* @Version V1.0
+* @Description: Activity的基类
+*/
  abstract public class BaseActivity extends AppCompatActivity {
     protected String cacheDir;
     protected ViewGroup.LayoutParams contentViewParams;
@@ -42,6 +45,10 @@ import java.io.File;
         }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (!isHome() && actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         File externalCache = getExternalCacheDir();
         if (externalCache != null) {
@@ -55,14 +62,43 @@ import java.io.File;
         return null;
     }
 
+
+    /**
+     * 是否是主页,如果不是主页,ToolBar应该是返回模式
+     * @return true 如果是主页
+     */
+    protected boolean isHome(){
+        return false;
+    }
+
+    /**
+     * 获取Activity的布局文件id
+     * @return 布局id
+     */
     protected abstract int getContentLayout();
 
+    /**
+     * 初始化View
+     */
     protected abstract void initView();
 
+    /**
+     * 初始化监听回调
+     */
     protected abstract void initListener();
 
+    /**
+     * 初始化数据
+     */
     protected abstract void initData();
 
+
+    protected void setTitle(String title){
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     protected <T extends View> T getView(Activity activity,int viewResId) {
@@ -76,4 +112,12 @@ import java.io.File;
         return (T)parent.findViewById(viewResId);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

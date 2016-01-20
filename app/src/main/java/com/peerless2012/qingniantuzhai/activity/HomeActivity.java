@@ -138,6 +138,11 @@ public class HomeActivity extends BaseActivity
     }
 
     @Override
+    protected boolean isHome() {
+        return true;
+    }
+
+    @Override
     protected void onDestroy() {
         subscribe.unsubscribe();
         super.onDestroy();
@@ -180,17 +185,17 @@ public class HomeActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
+        if (id == R.id.nav_clean) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_day) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_night) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_color) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_view) {
 
         }
 

@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">qingniantuzhai</string>
+    <string name="app_name">青年图摘</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">青年图摘</string>
+    <string name="navigation_drawer_close">青年图摘</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
 </resources>

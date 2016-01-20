@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -14,24 +13,26 @@ import com.peerless2012.qingniantuzhai.model.ArticleItem;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
 import com.peerless2012.qingniantuzhai.view.adapter.ArticleDetailPagerAdapter;
 import com.peerless2012.qingniantuzhai.view.widget.PhotoViewPager;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
+/**
+* @Author peerless2012
+* @Email peerless2012@126.com
+* @DateTime 2016/1/20 23:14
+* @Version V1.0
+* @Description: 计划单独一个图片,单独一个gif显示一个,一组多图的整页显示一组
+*/
 public class DetailActivity extends BaseActivity{
     private final static String DETAIL = "detail";
     private DetailOnPageChangeListener listener;
@@ -61,6 +62,8 @@ public class DetailActivity extends BaseActivity{
         articleDetailPagerAdapter = new ArticleDetailPagerAdapter();
         articlePager.setAdapter(articleDetailPagerAdapter);
         ArticleItem articleItem = getIntent().getParcelableExtra(DETAIL);
+        toolbar.setTitle(articleItem.getTitle());
+        setTitle(articleItem.getTitle());
         subscribe = Observable.just(articleItem)
                 .map(new Func1<ArticleItem, List<ArticleDetail>>() {
                     @Override
@@ -90,6 +93,9 @@ public class DetailActivity extends BaseActivity{
                                    articleDetail.setDesc(pElement.text());
                                }else {
                                    Element img = imgs.first();
+                                   if (articleDetail == null) {
+                                       articleDetail = new ArticleDetail();
+                                   }
                                    articleDetail.setImg(img.attr("data-src"));
                                    articleDetails.add(articleDetail);
                                    articleDetail = null;

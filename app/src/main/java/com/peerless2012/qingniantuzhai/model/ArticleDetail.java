@@ -4,13 +4,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Administrator on 2016/1/20.
- */
+* @Author peerless2012
+* @Email peerless2012@126.com
+* @DateTime 2016/1/20 23:13
+* @Version V1.0
+* @Description:
+*/
 public class ArticleDetail implements Parcelable{
 
     public static final int TYPE_IMG = 1;
@@ -42,12 +45,22 @@ public class ArticleDetail implements Parcelable{
     private int type;
 
     public String getImg() {
-//        return img;
-        return "http://www.qingniantuzhai.com/images/logo.gif";
+        return img;
     }
 
     public void setImg(String img) {
         this.img = img;
+        if (this.img != null){
+            if (this.img.endsWith("gif")){
+                setType(TYPE_GIF);
+            }else if (this.img.endsWith("jpg") || this.img.endsWith("png")){
+                setType(TYPE_IMG);
+            }
+            //TODO .......更加详细的类型
+            setType(TYPE_VIDEO);
+        }else {
+            throw new IllegalArgumentException("Url can't be null!");
+        }
     }
 
     @Nullable
@@ -60,18 +73,7 @@ public class ArticleDetail implements Parcelable{
     }
 
     public @IArticleDetail int getType() {
-        if (getImg() != null){
-            if (getImg().endsWith("gif")){
-                return TYPE_GIF;
-            }else if (getImg().endsWith("jpg") || getImg().endsWith("png")){
-                return TYPE_IMG;
-            }
-            //TODO .......更加详细的类型
-            return TYPE_VIDEO;
-
-        }else {
-            throw new IllegalArgumentException("Url can't be null!");
-        }
+        return type;
     }
 
     public void setType(@IArticleDetail int type) {

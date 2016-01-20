@@ -3,33 +3,32 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camara"
-            android:icon="@android:drawable/ic_menu_camera"
-            android:title="Import"/>
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@android:drawable/ic_menu_gallery"
-            android:title="Gallery"/>
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="Slideshow"/>
-        <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_clean"
             android:icon="@android:drawable/ic_menu_manage"
-            android:title="Tools"/>
+            android:title="清除缓存"/>
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="关于"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="显示模式">
         <menu>
+            <!--日间模式-->
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_day"
                 android:icon="@android:drawable/ic_menu_share"
-                android:title="Share"/>
+                android:title="日间模式"/>
+            <!--夜间模式-->
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_night"
                 android:icon="@android:drawable/ic_menu_send"
-                android:title="Send"/>
+                android:title="夜间模式"/>
+            <!--点击弹出对话框可以自由选择颜色模式-->
+            <item
+                android:id="@+id/nav_color"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="多彩模式"/>
         </menu>
     </item>
 
