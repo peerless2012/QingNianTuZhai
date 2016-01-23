@@ -1,11 +1,16 @@
 package com.peerless2012.qingniantuzhai.view.adapter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Movie;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,14 +22,15 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.peerless2012.qingniantuzhai.R;
+import com.peerless2012.qingniantuzhai.fragment.GifFragment;
+import com.peerless2012.qingniantuzhai.fragment.PhotoFragment;
+import com.peerless2012.qingniantuzhai.fragment.VideoFragment;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.view.widget.GifView;
 import com.peerless2012.qingniantuzhai.view.widget.NetworkPhotoView;
 
 import java.io.File;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 /**
@@ -34,13 +40,16 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 * @Version V1.0
 * @Description:
 */
-public class ArticleDetailPagerAdapter extends PagerAdapter{
-
+public class ArticleDetailPagerAdapter extends FragmentPagerAdapter {
     private List<ArticleDetail> articleDetails;
-    public ArticleDetailPagerAdapter() {
+    private Context context;
+    public ArticleDetailPagerAdapter(Context context,FragmentManager fm) {
+        this(context,fm,null);
     }
 
-    public ArticleDetailPagerAdapter(List<ArticleDetail> articleDetails) {
+    public ArticleDetailPagerAdapter(Context context,FragmentManager fm,List<ArticleDetail> articleDetails) {
+        super(fm);
+        this.context = context;
         this.articleDetails = articleDetails;
     }
 
@@ -52,29 +61,24 @@ public class ArticleDetailPagerAdapter extends PagerAdapter{
         }
         notifyDataSetChanged();
     }
-
+    public Object getItemByPosition(int position){
+        return articleDetails.get(position);
+    }
     @Override
     public int getCount() {
         return articleDetails == null ? 0 : articleDetails.size();
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        //业务逻辑
-        ViewPager.LayoutParams params = new ViewPager.LayoutParams();
-        View result = null;
-//        if (!ImageLoader.getInstance().isInited()) {
-//            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(container.getContext().getApplicationContext()).build();
-//            ImageLoader.getInstance().init(config);
-//        }
-//
-//        ArticleDetail articleDetail = (ArticleDetail) getItem(position);
-//        if (articleDetail.getType() == ArticleDetail.TYPE_IMG){
+    public Fragment getItem(int position) {
+        ArticleDetail articleDetail = articleDetails.get(position);
+        if (articleDetail.getType() == ArticleDetail.TYPE_IMG){
+            return PhotoFragment.newInstance(context,articleDetail);
+        }else if (articleDetail.getType() == ArticleDetail.TYPE_GIF){
+            return GifFragment.newInstance(context, articleDetail);
+        }else {
+            return VideoFragment.newInstance(context, articleDetail);
+        }
 //
 //            PhotoView photoView = new PhotoView(container.getContext());
 //            ImageLoader.getInstance().displayImage(articleDetail.getImg(), photoView);
@@ -100,26 +104,5 @@ public class ArticleDetailPagerAdapter extends PagerAdapter{
 //        }else {
 //            throw new IllegalArgumentException("UnSupport Tpye Exception !");
 //        }
-        TextView textView = new TextView(container.getContext());
-        textView.setTextColor(Color.BLACK);
-        ArticleDetail articleDetail = (ArticleDetail) getItem(position);
-        textView.setText(articleDetail.getImg());
-        result = textView;
-        container.addView(result,params);
-        return result;
-    }
-
-    public Object getItem(int position){
-        return articleDetails.get(position);
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View)object);
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return articleDetails.get(position).getDesc();
     }
 }

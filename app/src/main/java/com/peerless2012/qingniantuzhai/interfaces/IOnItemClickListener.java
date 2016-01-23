@@ -6,7 +6,7 @@ import android.view.View;
  * Interface definition for a callback to be invoked when an item in this
  * AdapterView has been clicked.
  */
-public interface OnItemClickListener {
+public interface IOnItemClickListener {
 
     /**
      * Callback method to be invoked when an item in this AdapterView has

@@ -55,9 +55,10 @@ public class ArticleDetail implements Parcelable{
                 setType(TYPE_GIF);
             }else if (this.img.endsWith("jpg") || this.img.endsWith("png")){
                 setType(TYPE_IMG);
+            }else {
+                //TODO .......更加详细的类型
+                setType(TYPE_VIDEO);
             }
-            //TODO .......更加详细的类型
-            setType(TYPE_VIDEO);
         }else {
             throw new IllegalArgumentException("Url can't be null!");
         }

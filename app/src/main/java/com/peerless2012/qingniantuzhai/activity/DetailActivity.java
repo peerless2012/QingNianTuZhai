@@ -3,6 +3,7 @@ package com.peerless2012.qingniantuzhai.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.CursorAdapter;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,6 +35,7 @@ import rx.schedulers.Schedulers;
 * @Description: 计划单独一个图片,单独一个gif显示一个,一组多图的整页显示一组
 */
 public class DetailActivity extends BaseActivity{
+    private String TAG = "DetailActivity";
     private final static String DETAIL = "detail";
     private DetailOnPageChangeListener listener;
     private PhotoViewPager articlePager;
@@ -59,7 +61,7 @@ public class DetailActivity extends BaseActivity{
 
     @Override
     protected void initData() {
-        articleDetailPagerAdapter = new ArticleDetailPagerAdapter();
+        articleDetailPagerAdapter = new ArticleDetailPagerAdapter(this,getSupportFragmentManager());
         articlePager.setAdapter(articleDetailPagerAdapter);
         ArticleItem articleItem = getIntent().getParcelableExtra(DETAIL);
         toolbar.setTitle(articleItem.getTitle());
@@ -144,7 +146,7 @@ public class DetailActivity extends BaseActivity{
 
         @Override
         public void onPageSelected(int position) {
-            ArticleDetail articleDetail = (ArticleDetail) articleDetailPagerAdapter.getItem(position);
+            ArticleDetail articleDetail = (ArticleDetail) articleDetailPagerAdapter.getItemByPosition(position);
             articleItemDesc.setText(articleDetail.getDesc());
         }
 

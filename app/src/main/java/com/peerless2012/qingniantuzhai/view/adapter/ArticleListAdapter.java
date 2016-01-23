@@ -1,19 +1,16 @@
 package com.peerless2012.qingniantuzhai.view.adapter;
 
-import android.content.IntentFilter;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.Volley;
 import com.peerless2012.common.imgcache.ImageCacheManager;
 import com.peerless2012.qingniantuzhai.R;
-import com.peerless2012.qingniantuzhai.interfaces.OnItemClickListener;
+import com.peerless2012.qingniantuzhai.interfaces.IOnItemClickListener;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
 
 import java.util.ArrayList;
@@ -27,13 +24,13 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     private LayoutInflater layoutInflater;
     private ImageLoader imageLoader;
     private List<ArticleItem> articleItems;
-    private OnItemClickListener listener;
+    private IOnItemClickListener listener;
     private OnRecycleItemClickListener recycleItemClickListener = new OnRecycleItemClickListener();
     public ArticleListAdapter() {
 
     }
 
-    public void setOnItemClickListener(OnItemClickListener l){
+    public void setOnItemClickListener(IOnItemClickListener l){
         listener = l;
     }
 

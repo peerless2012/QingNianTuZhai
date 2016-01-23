@@ -2,6 +2,8 @@ package com.peerless2012.qingniantuzhai;
 
 import android.app.Application;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.peerless2012.common.imgcache.ImageCacheManager;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
 
@@ -22,6 +24,12 @@ public class App extends Application{
      * 初始化图片缓存管理器
      */
     private void initImageCacheManager() {
+        if (!ImageLoader.getInstance().isInited()) {
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+            ImageLoader.getInstance().init(config);
+        }
+
+
         StringBuffer sb = new StringBuffer();
         File externalCacheDir = getExternalFilesDir(null);
         if (externalCacheDir != null) {
