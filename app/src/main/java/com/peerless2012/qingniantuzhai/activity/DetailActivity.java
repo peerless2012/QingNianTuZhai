@@ -34,6 +34,7 @@ import rx.schedulers.Schedulers;
 * @Description: 计划单独一个图片,单独一个gif显示一个,一组多图的整页显示一组
 */
 public class DetailActivity extends BaseActivity{
+    private String TAG = "DetailActivity";
     private final static String DETAIL = "detail";
     private DetailOnPageChangeListener listener;
     private PhotoViewPager articlePager;

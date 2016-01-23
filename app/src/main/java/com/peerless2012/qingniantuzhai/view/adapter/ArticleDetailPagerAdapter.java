@@ -6,6 +6,7 @@ import android.graphics.Movie;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -101,6 +102,7 @@ public class ArticleDetailPagerAdapter extends PagerAdapter{
 //            throw new IllegalArgumentException("UnSupport Tpye Exception !");
 //        }
         TextView textView = new TextView(container.getContext());
+        textView.setGravity(Gravity.CENTER);
         textView.setTextColor(Color.BLACK);
         ArticleDetail articleDetail = (ArticleDetail) getItem(position);
         textView.setText(articleDetail.getImg());

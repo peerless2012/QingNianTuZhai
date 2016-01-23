@@ -18,15 +18,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.interfaces.OnItemClickListener;
-import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
+import com.peerless2012.qingniantuzhai.utils.SPUtils;
 import com.peerless2012.qingniantuzhai.view.adapter.ArticleListAdapter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
+/**
+* @Author peerless2012
+* @Email peerless2012@126.com
+* @DateTime 2016/1/18 22:55
+* @Version V1.0
+* @Description:
+*/
 public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
 
@@ -96,7 +101,7 @@ public class HomeActivity extends BaseActivity
                         ArrayList<ArticleItem> list = new ArrayList<ArticleItem>();
                         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                         String readJson = FileUtils.readJson(cacheDir, urlStr);
-                        if (readJson != null) {
+                        if (readJson != null && !SPUtils.isTodaysFirst(HomeActivity.this)) {
                             return gson.fromJson(readJson,new TypeToken<List<ArticleItem>>(){}.getType());
                         }
                         try {
@@ -121,6 +126,7 @@ public class HomeActivity extends BaseActivity
                                 list.add(item);
                             }
                             FileUtils.saveJson(cacheDir,gson.toJson(list,new TypeToken<List<ArticleItem>>(){}.getType()), url.toString());
+                            SPUtils.restoreTodaysFirst(HomeActivity.this);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
