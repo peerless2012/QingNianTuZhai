@@ -9,6 +9,9 @@
     </style>
     <style name="AppTheme.HomeNoActionBar" parent="AppTheme.NoActionBar">
     </style>
+    <style name="AppTheme.HomeNoActionBar.Dark" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

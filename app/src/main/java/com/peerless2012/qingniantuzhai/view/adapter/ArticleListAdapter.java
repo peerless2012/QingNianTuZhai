@@ -45,6 +45,10 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         articleItems.addAll(articles);
         notifyDataSetChanged();
     }
+    public void setData(List<ArticleItem> articles){
+        articleItems = articles;
+        notifyDataSetChanged();
+    }
 
     @Override
     public ArticleListHolder onCreateViewHolder(ViewGroup parent, int viewType) {

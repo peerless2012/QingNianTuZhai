@@ -3,7 +3,8 @@ package com.peerless2012.qingniantuzhai.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,6 +14,7 @@ import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
 import com.peerless2012.qingniantuzhai.service.DownloadImgsService;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
+import com.peerless2012.qingniantuzhai.utils.ThemeUtils;
 import com.peerless2012.qingniantuzhai.view.adapter.ArticleDetailPagerAdapter;
 import com.peerless2012.qingniantuzhai.view.widget.PhotoViewPager;
 import org.jsoup.Jsoup;
@@ -35,7 +37,7 @@ import rx.schedulers.Schedulers;
 * @Version V1.0
 * @Description: 计划单独一个图片,单独一个gif显示一个,一组多图的整页显示一组
 */
-public class DetailActivity extends BaseActivity{
+public class DetailActivity extends BaseActivity implements View.OnClickListener{
     private String TAG = "DetailActivity";
     private final static String DETAIL = "detail";
     private DetailOnPageChangeListener listener;
@@ -60,6 +62,7 @@ public class DetailActivity extends BaseActivity{
     protected void initListener() {
         listener = new DetailOnPageChangeListener();
         articlePager.addOnPageChangeListener(listener);
+        findViewById(R.id.detail_parent).setOnClickListener(this);
     }
 
     @Override
@@ -140,6 +143,11 @@ public class DetailActivity extends BaseActivity{
         super.onDestroy();
     }
 
+    @Override
+    public void onClick(View v) {
+        ThemeUtils.hideNavigationBar(this);
+    }
+
     class DetailOnPageChangeListener implements ViewPager.OnPageChangeListener{
 
         @Override
@@ -158,8 +166,6 @@ public class DetailActivity extends BaseActivity{
 
         }
     }
-
-
 
     public static void launch(Context context,ArticleItem item){
         Intent intent = new Intent(context,DetailActivity.class);

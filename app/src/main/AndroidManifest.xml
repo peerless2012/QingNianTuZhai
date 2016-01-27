@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DetailActivity"/>
+        <activity
+            android:theme="@style/AppTheme.HomeNoActionBar.Dark"
+            android:name=".activity.DetailActivity"/>
         <service android:name=".service.DownloadImgsService"/>
     </application>
 

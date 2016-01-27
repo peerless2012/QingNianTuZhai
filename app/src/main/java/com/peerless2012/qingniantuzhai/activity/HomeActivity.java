@@ -13,6 +13,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -48,6 +50,8 @@ public class HomeActivity extends BaseActivity
     private RecyclerView homeRecycleView;
 
     private ArticleListAdapter articleListAdapter;
+
+    private MaterialRefreshLayout swipeRefreshLayout;
     @Override
     protected int getContentLayout() {
         return R.layout.activity_home;
@@ -64,6 +68,7 @@ public class HomeActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         homeRecycleView = getView(R.id.article_list);
+        swipeRefreshLayout = getView(R.id.home_refresh);
         homeRecycleView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL,false));
         homeRecycleView.setHasFixedSize(true);
         articleListAdapter = new ArticleListAdapter();
@@ -85,7 +90,31 @@ public class HomeActivity extends BaseActivity
             @Override
             public void onItemClick(View parent, View view, int position, long id) {
                 ArticleItem articleItem = (ArticleItem) articleListAdapter.getItem(position);
-                DetailActivity.launch(HomeActivity.this,articleItem);
+                DetailActivity.launch(HomeActivity.this, articleItem);
+            }
+        });
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                initData(true);
+//            }
+//        });
+        swipeRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                initData(true);
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                Log.i("HomeActivity","上拉加载更多被调用");
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                    }
+//                });
+
             }
         });
     }
@@ -94,6 +123,10 @@ public class HomeActivity extends BaseActivity
     private Subscription subscribe;
     @Override
     protected void initData() {
+        initData(false);
+    }
+
+    private void initData(final boolean isForce){
         subscribe = Observable.just(baseUrl)
                 .map(new Func1<String, List<ArticleItem>>() {
                     @Override
@@ -101,7 +134,7 @@ public class HomeActivity extends BaseActivity
                         ArrayList<ArticleItem> list = new ArrayList<ArticleItem>();
                         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                         String readJson = FileUtils.readJson(cacheDir, urlStr);
-                        if (readJson != null && !SPUtils.isTodaysFirst(HomeActivity.this)) {
+                        if (!isForce &&!SPUtils.isTodaysFirst(HomeActivity.this) && readJson != null) {
                             return gson.fromJson(readJson,new TypeToken<List<ArticleItem>>(){}.getType());
                         }
                         try {
@@ -138,7 +171,8 @@ public class HomeActivity extends BaseActivity
                 .subscribe(new Action1<List<ArticleItem>>() {
                     @Override
                     public void call(List<ArticleItem> articleItems) {
-                        articleListAdapter.addData(articleItems);
+                        articleListAdapter.setData(articleItems);
+                        swipeRefreshLayout.finishRefresh();
                     }
                 });
     }
