@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
+import com.peerless2012.qingniantuzhai.service.DownloadImgsService;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
 import com.peerless2012.qingniantuzhai.view.adapter.ArticleDetailPagerAdapter;
 import com.peerless2012.qingniantuzhai.view.widget.PhotoViewPager;
@@ -49,6 +50,8 @@ public class DetailActivity extends BaseActivity{
 
     @Override
     protected void initView() {
+        Intent intent = new Intent(this, DownloadImgsService.class);
+        startService(intent);
         articlePager = getView(R.id.article_detail_pager);
         articleItemDesc = getView(R.id.article_detail_desc);
     }

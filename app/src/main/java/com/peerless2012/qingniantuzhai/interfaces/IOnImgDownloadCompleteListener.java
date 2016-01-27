@@ -12,5 +12,5 @@ public interface IOnImgDownloadCompleteListener {
      * 下载完成回调
      * @param downloadUrl null if fail
      */
-    public void onImgDownloadComplete(String downloadUrl);
+    public void onImgDownloadComplete(String downloadUrl,String path);
 }
