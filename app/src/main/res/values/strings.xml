@@ -5,4 +5,12 @@
     <string name="navigation_drawer_close">青年图摘</string>
 
     <string name="action_settings">设置</string>
+
+    <!--详情页面-->
+    <string name="save_not_exist">还未下载完毕</string>
+    <string name="save_start">保存开始</string>
+    <string name="save_successfully">保存成功</string>
+    <string name="save_failed">保存失败</string>
+    <string name="save_exist">已经存在</string>
+
 </resources>

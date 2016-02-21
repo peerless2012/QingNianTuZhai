@@ -10,4 +10,5 @@ package com.peerless2012.qingniantuzhai.interfaces;
 public interface IDownloadService {
     public void add(String url,IOnImgDownloadCompleteListener l);
     public void removeListener(String url, IOnImgDownloadCompleteListener l);
+    public void save(String url);
 }

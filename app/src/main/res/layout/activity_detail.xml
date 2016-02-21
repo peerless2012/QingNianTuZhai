@@ -42,10 +42,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"/>
             <ImageView
-                android:src="@android:drawable/ic_menu_save"
+                android:id="@+id/article_detail_save"
+                android:src="@drawable/img_save"
                 android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="36dp"
+                android:scaleType="matrix"
+                android:layout_height="36dp"/>
         </RelativeLayout>
     </RelativeLayout>
 

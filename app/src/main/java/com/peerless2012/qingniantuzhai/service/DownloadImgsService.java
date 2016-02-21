@@ -3,11 +3,16 @@ package com.peerless2012.qingniantuzhai.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+
+import com.github.lazylibrary.util.FileUtils;
+import com.github.lazylibrary.util.ToastUtils;
+import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.interfaces.IDownloadService;
 import com.peerless2012.qingniantuzhai.interfaces.IOnImgDownloadCompleteListener;
 import java.io.BufferedInputStream;
@@ -33,7 +38,44 @@ import okhttp3.ResponseBody;
  * @Description
  */
 public class DownloadImgsService extends Service{
+    /**
+     * 下载普通图片
+     */
+    private final static int FLAG_DOWNLOAD_IMG = 1;
+    /**
+     * 下载gif图片
+     */
+    private final static int FLAG_DOWNLOAD_GIF = 2;
+    /**
+     * 下载开始
+     */
+    private final static int FLAG_DOWNLOAD_START = 3;
+    /**
+     * 下载结束
+     */
+    private final static int FLAG_DOWNLOAD_END = 4;
+    /**
+     * 保存图片
+     */
+    private final static int FLAG_SAVE_IMG = 10;
+    /**
+     * 保存开始
+     */
+    private final static int FLAG_SAVE_IMG_START = 11;
+    /**
+     * 保存完成
+     */
+    private final static int FLAG_SAVE_IMG_END = 12;
+    /**
+     * 保存成功
+     */
+    private final static int STATUS_SAVE_IMG_SUCCESSFUL = 1;
+    /**
+     * 保存失败
+     */
+    private final static int STATUS_SAVE_IMG_FAIL = 2;
     protected String cacheDir;
+    protected String saveDir;
     private Looper downloadLooper;
     private Handler downloadHandle;
     private Handler handle;
@@ -53,7 +95,10 @@ public class DownloadImgsService extends Service{
         }else {
             cacheDir = getCacheDir().getAbsolutePath();
         }
-
+        if (Environment.isExternalStorageEmulated()){
+            //TODO ................
+//            Environment.getExternalStorageState()
+        }
         listenerMap = new HashMap<String,IOnImgDownloadCompleteListener>();
 
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
@@ -68,7 +113,25 @@ public class DownloadImgsService extends Service{
         downloadHandle = new Handler(downloadLooper){
             @Override
             public void handleMessage(Message msg) {
-                downloadImgs((String)msg.obj);
+                switch (msg.what){
+                    case FLAG_DOWNLOAD_IMG:
+                    case FLAG_DOWNLOAD_GIF:
+                        downloadImgs((String)msg.obj);
+                        break;
+                    case FLAG_SAVE_IMG:
+                        String fileName = getFileNameByUrl((String)msg.obj);
+                        File src = new File(cacheDir,fileName);
+                        File dest = new File(cacheDir,fileName);
+                        boolean result = false;
+                        try {
+                            result = FileUtils.copyFile(src.getAbsolutePath(),dest.getAbsolutePath());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        ToastUtils.showToast(getApplicationContext(), getResources().getString(result ? R.string.save_successfully : R.string.save_failed));
+                        break;
+
+                }
             }
         };
 
@@ -105,7 +168,7 @@ public class DownloadImgsService extends Service{
                     byte[] buffer = new byte[1024];
                     int len = -1;
                     while ((len = bufferedInputStream.read(buffer)) != -1){
-                        bufferedOutputStream.write(buffer,0,len);
+                        bufferedOutputStream.write(buffer, 0, len);
                         bufferedOutputStream.flush();
                     }
                     File newPath = new File(cacheDir, fileName);
@@ -141,7 +204,7 @@ public class DownloadImgsService extends Service{
     }
 
     private void addDownload(String url, IOnImgDownloadCompleteListener l){
-        listenerMap.put(url,l);
+        listenerMap.put(url, l);
         Message message = downloadHandle.obtainMessage();
         message.obj = url;
         downloadHandle.sendMessage(message);
@@ -170,6 +233,17 @@ public class DownloadImgsService extends Service{
         super.onDestroy();
     }
 
+    private void saveImg(String url){
+        File file = new File(cacheDir,getFileNameByUrl(url));
+        if (!file.exists()){
+            ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.save_not_exist));
+            return;
+        }
+        ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.save_start));
+        Message saveMessage = downloadHandle.obtainMessage(FLAG_SAVE_IMG, url);
+        saveMessage.sendToTarget();
+
+    }
 
     public class DownloadBinder extends Binder implements IDownloadService{
 
@@ -181,6 +255,11 @@ public class DownloadImgsService extends Service{
         @Override
         public void removeListener(String url, IOnImgDownloadCompleteListener l) {
             removeDownloadListener(url, l);
+        }
+
+        @Override
+        public void save(String url) {
+            saveImg(url);
         }
     }
 

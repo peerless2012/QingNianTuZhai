@@ -1,7 +1,10 @@
 package com.peerless2012.qingniantuzhai.activity;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
@@ -45,6 +48,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private TextView articleItemDesc;
     private ArticleDetailPagerAdapter articleDetailPagerAdapter;
     private Subscription subscribe;
+    private ServiceConnection downloadConnection;
+    private DownloadImgsService.DownloadBinder downloadBinder;
     @Override
     protected int getContentLayout() {
         return R.layout.activity_detail;
@@ -53,9 +58,21 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initView() {
         Intent intent = new Intent(this, DownloadImgsService.class);
-        startService(intent);
+        downloadConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                downloadBinder = (DownloadImgsService.DownloadBinder) service;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(intent,downloadConnection,BIND_AUTO_CREATE);
         articlePager = getView(R.id.article_detail_pager);
         articleItemDesc = getView(R.id.article_detail_desc);
+
     }
 
     @Override
@@ -63,6 +80,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         listener = new DetailOnPageChangeListener();
         articlePager.addOnPageChangeListener(listener);
         findViewById(R.id.detail_parent).setOnClickListener(this);
+        findViewById(R.id.article_detail_save).setOnClickListener(this);
     }
 
     @Override
@@ -138,6 +156,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
+        unbindService(downloadConnection);
         if (!subscribe.isUnsubscribed()) subscribe.unsubscribe();
         articlePager.removeOnPageChangeListener(listener);
         super.onDestroy();
@@ -145,7 +164,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        ThemeUtils.hideNavigationBar(this);
+        switch (v.getId()){
+            case R.id.article_detail_save:
+                downloadBinder.save(articleDetailPagerAdapter.getItemByPosition(articlePager.getCurrentItem()).getImg());
+                break;
+        }
     }
 
     class DetailOnPageChangeListener implements ViewPager.OnPageChangeListener{

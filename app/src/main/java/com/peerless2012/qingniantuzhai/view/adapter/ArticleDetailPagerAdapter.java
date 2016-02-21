@@ -61,7 +61,7 @@ public class ArticleDetailPagerAdapter extends FragmentPagerAdapter {
         }
         notifyDataSetChanged();
     }
-    public Object getItemByPosition(int position){
+    public ArticleDetail getItemByPosition(int position){
         return articleDetails.get(position);
     }
     @Override
