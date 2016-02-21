@@ -1,5 +1,6 @@
 package com.peerless2012.qingniantuzhai.activity;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,19 +29,24 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
 /**
 * @Author peerless2012
 * @Email peerless2012@126.com
-* @DateTime 2016/1/18 22:55
+* @DateTime 2016/4/8 16:59
 * @Version V1.0
 * @Description:
 */
@@ -52,6 +58,8 @@ public class HomeActivity extends BaseActivity
     private ArticleListAdapter articleListAdapter;
 
     private MaterialRefreshLayout swipeRefreshLayout;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
     @Override
     protected int getContentLayout() {
         return R.layout.activity_home;
@@ -59,10 +67,10 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void initView() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -73,6 +81,7 @@ public class HomeActivity extends BaseActivity
         homeRecycleView.setHasFixedSize(true);
         articleListAdapter = new ArticleListAdapter();
         homeRecycleView.setAdapter(articleListAdapter);
+
     }
 
     @Override
@@ -139,7 +148,6 @@ public class HomeActivity extends BaseActivity
                         }
                         try {
                             URL url = new URL(urlStr);
-
                             Document document = Jsoup.parse(url, 5000);
                             Elements rowElements = document.getElementsByClass("row");
                             for (int i = 1; i < rowElements.size(); i++) {
@@ -184,6 +192,7 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void onDestroy() {
+        drawer.removeDrawerListener(toggle);
         subscribe.unsubscribe();
         super.onDestroy();
     }

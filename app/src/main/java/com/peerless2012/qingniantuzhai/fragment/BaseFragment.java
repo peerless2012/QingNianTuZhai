@@ -4,6 +4,8 @@ package com.peerless2012.qingniantuzhai.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.peerless2012.qingniantuzhai.App;
+
 import java.io.File;
 
 /**
@@ -16,11 +18,12 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        File externalCache = getContext().getExternalCacheDir();
-        if (externalCache != null) {
-            cacheDir = externalCache.getAbsolutePath();
-        }else {
-            cacheDir = getContext().getCacheDir().getAbsolutePath();
-        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        App app= (App)getActivity().getApplication();
+        cacheDir = app.getAppCacheDir().getAbsolutePath();
     }
 }

@@ -6,8 +6,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by Administrator on 2016/1/20.
- */
+* @Author peerless2012
+* @Email peerless2012@126.com
+* @DateTime 2016/4/9 16:59
+* @Version V1.0
+* @Description:
+*/
 public class PhotoViewPager extends ViewPager{
     private boolean isLocked;
     public PhotoViewPager(Context context) {

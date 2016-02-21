@@ -154,6 +154,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
+    public void inFullScreenMode(){
+        ThemeUtils.hideNavigationBar(this);
+    }
+
     @Override
     protected void onDestroy() {
         unbindService(downloadConnection);

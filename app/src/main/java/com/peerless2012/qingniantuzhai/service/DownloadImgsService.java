@@ -9,9 +9,9 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-
 import com.github.lazylibrary.util.FileUtils;
 import com.github.lazylibrary.util.ToastUtils;
+import com.peerless2012.qingniantuzhai.App;
 import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.interfaces.IDownloadService;
 import com.peerless2012.qingniantuzhai.interfaces.IOnImgDownloadCompleteListener;
@@ -29,7 +29,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-
 /**
  * @author peerless2012
  * @Email peerless2012@126.com
@@ -89,16 +88,7 @@ public class DownloadImgsService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
-        File externalCache = getExternalCacheDir();
-        if (externalCache != null) {
-            cacheDir = externalCache.getAbsolutePath();
-        }else {
-            cacheDir = getCacheDir().getAbsolutePath();
-        }
-        if (Environment.isExternalStorageEmulated()){
-            //TODO ................
-//            Environment.getExternalStorageState()
-        }
+        cacheDir = ((App)getApplication()).getAppCacheDir().getAbsolutePath();
         listenerMap = new HashMap<String,IOnImgDownloadCompleteListener>();
 
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
@@ -121,16 +111,17 @@ public class DownloadImgsService extends Service{
                     case FLAG_SAVE_IMG:
                         String fileName = getFileNameByUrl((String)msg.obj);
                         File src = new File(cacheDir,fileName);
-                        File dest = new File(cacheDir,fileName);
+
+                        File dest = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/Pictures/QingNianTuZhai",fileName);
                         boolean result = false;
                         try {
                             result = FileUtils.copyFile(src.getAbsolutePath(),dest.getAbsolutePath());
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-                        ToastUtils.showToast(getApplicationContext(), getResources().getString(result ? R.string.save_successfully : R.string.save_failed));
+                        Message message = handle.obtainMessage(FLAG_SAVE_IMG_END, result);
+                        message.sendToTarget();
                         break;
-
                 }
             }
         };
@@ -138,11 +129,24 @@ public class DownloadImgsService extends Service{
         handle = new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                DownloadBean downloadBean = (DownloadBean) msg.obj;
-                IOnImgDownloadCompleteListener listener = listenerMap.get(downloadBean.getUrl());
-                if (listener != null) {
-                    listener.onImgDownloadComplete(downloadBean.getUrl(),downloadBean.getPath());
+                switch (msg.what)
+                {
+                    case FLAG_DOWNLOAD_START:
+                        break;
+                    case FLAG_DOWNLOAD_END:
+                        DownloadBean downloadBean = (DownloadBean) msg.obj;
+                        IOnImgDownloadCompleteListener listener = listenerMap.get(downloadBean.getUrl());
+                        if (listener != null) {
+                            listener.onImgDownloadComplete(downloadBean.getUrl(), downloadBean.getPath());
+                        }
+                        break;
+                    case FLAG_SAVE_IMG_START:
+                        break;
+                    case FLAG_SAVE_IMG_END:
+                        ToastUtils.showToast(getApplicationContext(), getResources().getString((boolean)msg.obj ? R.string.save_successfully : R.string.save_failed));
+                        break;
                 }
+
 
             }
         };
@@ -178,6 +182,7 @@ public class DownloadImgsService extends Service{
                     downloadBean.setUrl(url);
                     downloadBean.setPath(newPath.getAbsolutePath());
                     Message message = handle.obtainMessage();
+                    message.what = FLAG_DOWNLOAD_END;
                     message.obj = downloadBean;
                     handle.sendMessage(message);
                 }else {
@@ -206,6 +211,7 @@ public class DownloadImgsService extends Service{
     private void addDownload(String url, IOnImgDownloadCompleteListener l){
         listenerMap.put(url, l);
         Message message = downloadHandle.obtainMessage();
+        message.what = FLAG_DOWNLOAD_GIF;
         message.obj = url;
         downloadHandle.sendMessage(message);
     }

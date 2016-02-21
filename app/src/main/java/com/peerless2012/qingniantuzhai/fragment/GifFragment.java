@@ -11,15 +11,18 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.github.lazylibrary.util.ToastUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.peerless2012.qingniantuzhai.activity.DetailActivity;
 import com.peerless2012.qingniantuzhai.interfaces.IOnImgDownloadCompleteListener;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.service.DownloadImgsService;
-
 import java.io.File;
 import java.io.IOException;
 import pl.droidsonroids.gif.AnimationListener;
@@ -38,7 +41,6 @@ public class GifFragment extends BaseFragment{
     private GifDrawable gifDrawable = null;
     private GifImageView gifImageView = null;
     private ArticleDetail articleDetail;
-    private boolean needLoad = false;
     private IOnImgDownloadCompleteListener listener;
     public static Fragment newInstance(Context context,ArticleDetail articleDetail){
         Bundle bundle = new Bundle();
@@ -49,53 +51,16 @@ public class GifFragment extends BaseFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        articleDetail = getArguments().getParcelable(ARTICLE_DETAIL);
         gifImageView = new GifImageView(container.getContext());
-        String fileNameByUrl = getFileNameByUrl(articleDetail.getImg());
-        if (isFileExists(fileNameByUrl)){
-            needLoad = false;
-            displayImgs(new File(cacheDir,fileNameByUrl).getAbsolutePath());
-        }else {
-            needLoad = true;
-        }
-
-        /*ImageLoader.getInstance().loadImage(articleDetail.getImg(),new SimpleImageLoadingListener(){
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    File file = ImageLoader.getInstance().getDiskCache().get(imageUri);
-//                    final GifDrawable gifDrawable = (GifDrawable) GifDrawable.createFromPath(file.getAbsolutePath());
-
-                    try {
-                        gifDrawable = new GifDrawable(file.getAbsolutePath());
-                        GifImageView gifImageView = new GifImageView(container.getContext());
-                        gifImageView.setImageDrawable(gifDrawable);
-                        gifDrawable.addAnimationListener(new AnimationListener() {
-                            @Override
-                            public void onAnimationCompleted() {
-                                gifDrawable.start();
-                            }
-                        });
-                        gifDrawable.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        gifImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentActivity activity = getActivity();
+                if (activity != null && activity instanceof DetailActivity) {
+                    ((DetailActivity)activity).inFullScreenMode();
                 }
-            });*/
-
-//        try {
-//            gifDrawable = new GifDrawable(Environment.getExternalStorageDirectory().getAbsolutePath()+"/1.gif");
-//            gifImageView = new GifImageView(container.getContext());
-//            gifImageView.setImageDrawable(gifDrawable);
-//            gifDrawable.addAnimationListener(new AnimationListener() {
-//                @Override
-//                public void onAnimationCompleted() {
-//                    gifDrawable.start();
-//                }
-//            });
-//            gifDrawable.start();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+            }
+        });
         return gifImageView;
     }
 
@@ -107,14 +72,18 @@ public class GifFragment extends BaseFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (needLoad) {
+        articleDetail = getArguments().getParcelable(ARTICLE_DETAIL);
+        String fileNameByUrl = getFileNameByUrl(articleDetail.getImg());
+        if (isFileExists(fileNameByUrl)){
+            displayImgs(new File(cacheDir,fileNameByUrl).getAbsolutePath());
+        }else {
             listener = new IOnImgDownloadCompleteListener() {
                 @Override
                 public void onImgDownloadComplete(String downloadUrl,String path) {
                     if (path != null){
                         displayImgs(path);
                     }else {
-                        //出错
+                        ToastUtils.showToast(getActivity(),"加载失败");
                     }
                 }
             };
@@ -159,7 +128,7 @@ public class GifFragment extends BaseFragment{
         if (gifImageView != null) {
             gifImageView.setImageDrawable(null);
         }
-        if (needLoad){
+        if (serviceConnection != null){
             unBindService();
         }
         super.onDestroy();

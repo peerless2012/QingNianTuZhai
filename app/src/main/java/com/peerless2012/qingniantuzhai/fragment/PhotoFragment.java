@@ -4,11 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.peerless2012.qingniantuzhai.activity.DetailActivity;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
 
@@ -34,6 +36,15 @@ public class PhotoFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         PhotoView photoView = new PhotoView(container.getContext());
+        photoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentActivity activity = getActivity();
+                if (activity != null && activity instanceof DetailActivity) {
+                    ((DetailActivity)activity).inFullScreenMode();
+                }
+            }
+        });
         ArticleDetail articleDetail = getArguments().getParcelable(ARTICLE_DETAIL);
         ImageLoader.getInstance().displayImage(articleDetail.getImg(), photoView);
         return photoView;
