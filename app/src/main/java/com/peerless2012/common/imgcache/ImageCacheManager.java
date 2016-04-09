@@ -31,7 +31,7 @@ public class ImageCacheManager {
 		DISK, MEMORY, ALL
 	}
 
-	private static ImageCacheManager mInstance;
+	private volatile static ImageCacheManager mInstance;
 
 	/**
 	 * Volley image loader

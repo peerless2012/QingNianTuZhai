@@ -19,6 +19,19 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    //For GifView Declaration
-    <style name="Widget.GifView" parent="@android:style/Widget"></style>
+    <style name="AppTheme.Light" parent="AppTheme.NoActionBar">
+        <item name="MainBg">@color/main_bg_normal</item>
+        <item name="MainTextColor">@color/main_textcolor_normal</item>
+        <item name="MainTextColorInvert">@color/main_textcolor_invert_normal</item>
+        <item name="SecondBg">@color/second_bg_normal</item>
+        <item name="SecondTextColor">@color/second_textcolor_normal</item>
+    </style>
+
+    <style name="AppTheme.Dark" parent="AppTheme.NoActionBar">
+        <item name="MainBg">@color/main_bg_dark</item>
+        <item name="MainTextColor">@color/main_textcolor_dark</item>
+        <item name="MainTextColorInvert">@color/main_textcolor_invert_dark</item>
+        <item name="SecondBg">@color/second_bg_dark</item>
+        <item name="SecondTextColor">@color/second_textcolor_dark</item>
+    </style>
 </resources>

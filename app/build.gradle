@@ -53,4 +53,6 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
     //下拉刷新和上拉加载更多,如果只需要下拉刷新,则直接用官方的就可以了
     compile 'com.cjj.materialrefeshlayout:library:1.3.0'
+
+
 }

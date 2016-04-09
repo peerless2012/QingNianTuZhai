@@ -1,6 +1,8 @@
 package com.peerless2012.qingniantuzhai.activity;
 
+import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.support.annotation.StyleRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.peerless2012.qingniantuzhai.R;
+import com.peerless2012.qingniantuzhai.colorui.util.ColorUiUtil;
 import com.peerless2012.qingniantuzhai.interfaces.IOnItemClickListener;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
@@ -29,13 +32,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.OkHttpClient;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -51,15 +50,23 @@ import rx.schedulers.Schedulers;
 * @Description:
 */
 public class HomeActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+        ,View.OnClickListener
+        ,DrawerLayout.DrawerListener{
 
     private RecyclerView homeRecycleView;
 
     private ArticleListAdapter articleListAdapter;
 
     private MaterialRefreshLayout swipeRefreshLayout;
-    private DrawerLayout drawer;
+    private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle toggle;
+    private NavigationView mNavigationView;
+
+    private SPUtils mSPUtils;
+
+    private int newTheme = -1;
+
     @Override
     protected int getContentLayout() {
         return R.layout.activity_home;
@@ -67,21 +74,22 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void initView() {
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mSPUtils  = SPUtils.getInstance(this);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
         homeRecycleView = getView(R.id.article_list);
         swipeRefreshLayout = getView(R.id.home_refresh);
         homeRecycleView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.VERTICAL,false));
         homeRecycleView.setHasFixedSize(true);
         articleListAdapter = new ArticleListAdapter();
         homeRecycleView.setAdapter(articleListAdapter);
-
+        changeTheme(false);
     }
 
     @Override
@@ -126,6 +134,7 @@ public class HomeActivity extends BaseActivity
 
             }
         });
+        mDrawerLayout.addDrawerListener(this);
     }
 
     private String baseUrl = "http://www.qingniantuzhai.com/home";
@@ -143,7 +152,7 @@ public class HomeActivity extends BaseActivity
                         ArrayList<ArticleItem> list = new ArrayList<ArticleItem>();
                         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                         String readJson = FileUtils.readJson(cacheDir, urlStr);
-                        if (!isForce &&!SPUtils.isTodaysFirst(HomeActivity.this) && readJson != null) {
+                        if (!isForce &&!SPUtils.getInstance(HomeActivity.this).isTodaysFirst() && readJson != null) {
                             return gson.fromJson(readJson,new TypeToken<List<ArticleItem>>(){}.getType());
                         }
                         try {
@@ -167,7 +176,7 @@ public class HomeActivity extends BaseActivity
                                 list.add(item);
                             }
                             FileUtils.saveJson(cacheDir,gson.toJson(list,new TypeToken<List<ArticleItem>>(){}.getType()), url.toString());
-                            SPUtils.restoreTodaysFirst(HomeActivity.this);
+                            SPUtils.getInstance(HomeActivity.this).restoreTodaysFirst();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -192,7 +201,7 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void onDestroy() {
-        drawer.removeDrawerListener(toggle);
+        mDrawerLayout.removeDrawerListener(toggle);
         subscribe.unsubscribe();
         super.onDestroy();
     }
@@ -209,7 +218,6 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
@@ -219,13 +227,12 @@ public class HomeActivity extends BaseActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateNavigateUpTaskStack(TaskStackBuilder builder) {
+        super.onCreateNavigateUpTaskStack(builder);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -234,23 +241,25 @@ public class HomeActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_clean) {
-            // Handle the camera action
-        } else if (id == R.id.nav_about) {
+        if (id == R.id.nav_theme) {
+            changeTheme(true);
+        } else if (id == R.id.nav_clean) {
 
-        } else if (id == R.id.nav_day) {
-
-        } else if (id == R.id.nav_night) {
-
-        } else if (id == R.id.nav_color) {
-
-        } else if (id == R.id.nav_view) {
+        }else if (id == R.id.nav_about){
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeTheme(boolean invert){
+        boolean dayMode = mSPUtils.isDayMode();
+        boolean newMode = invert ? !dayMode : dayMode;
+        String title = getString(newMode ? R.string.app_theme_day : R.string.app_theme_night);
+        int theme = newMode ? R.style.AppTheme_Light : R.style.AppTheme_Dark;
+        newTheme = theme;
+        mNavigationView.getMenu().findItem(R.id.nav_theme).setTitle(title);
+        mSPUtils.restoreTheme(theme);
     }
 
     @Override
@@ -377,5 +386,30 @@ public class HomeActivity extends BaseActivity
                 }
             }
         }.start();
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        if (newTheme > 0){
+            setTheme(newTheme);
+            View decorView = getWindow().getDecorView();
+            ColorUiUtil.changeTheme(decorView ,getTheme());
+            newTheme = -1;
+        }
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }

@@ -3,4 +3,18 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    //日间主题用色
+    <color name="main_bg_normal">#f6f6f6</color>
+    <color name="main_textcolor_normal">#333333</color>
+    <color name="main_textcolor_invert_normal">#FEFEFE</color>
+    <color name="second_bg_normal">#f6f6f6</color>
+    <color name="second_textcolor_normal">#A6A6A6</color>
+
+    // 夜间主题用色
+    <color name="main_bg_dark">#222222</color>
+    <color name="main_textcolor_dark">#979797</color>
+    <color name="main_textcolor_invert_dark">#979797</color>
+    <color name="second_bg_dark">#222222</color>
+    <color name="second_textcolor_dark">#646464</color>
 </resources>

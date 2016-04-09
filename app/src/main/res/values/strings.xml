@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">青年图摘</string>
+    <string name="app_theme_day">日间模式</string>
+    <string name="app_theme_night">夜间模式</string>
 
     <string name="navigation_drawer_open">青年图摘</string>
     <string name="navigation_drawer_close">青年图摘</string>

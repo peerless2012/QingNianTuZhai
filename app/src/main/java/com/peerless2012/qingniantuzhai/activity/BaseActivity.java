@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.peerless2012.qingniantuzhai.R;
+import com.peerless2012.qingniantuzhai.utils.SPUtils;
 import java.io.File;
 
 /**
@@ -25,12 +26,18 @@ import java.io.File;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme();
         super.onCreate(savedInstanceState);
         initActivity();
         initView();
         initListener();
         initData();
     }
+
+    private void setTheme() {
+        setTheme(SPUtils.getInstance(this).getTheme());
+    }
+
     private void initActivity() {
         int contentLayoutRes = getContentLayout();
         if (contentLayoutRes > 0) {

@@ -26,9 +26,7 @@ import com.peerless2012.qingniantuzhai.fragment.GifFragment;
 import com.peerless2012.qingniantuzhai.fragment.PhotoFragment;
 import com.peerless2012.qingniantuzhai.fragment.VideoFragment;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
-import com.peerless2012.qingniantuzhai.view.widget.GifView;
 import com.peerless2012.qingniantuzhai.view.widget.NetworkPhotoView;
-
 import java.io.File;
 import java.util.List;
 import uk.co.senab.photoview.PhotoView;
