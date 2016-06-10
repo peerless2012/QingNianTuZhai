@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ListView;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 /**
@@ -41,7 +42,7 @@ public class ColorListView extends ListView implements ColorUiInterface {
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         this.divider_height = getDividerHeight();
         ViewAttributeUtil.applyBackgroundDrawable(this, themeId, attr_background);
         int res_divider = this.attr_divider;

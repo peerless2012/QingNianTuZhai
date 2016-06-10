@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 /**
@@ -35,7 +36,7 @@ public class ColorImageButton extends ImageButton implements ColorUiInterface {
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         if(attr_drawable != -1) {
             ViewAttributeUtil.applyBackgroundDrawable(this, themeId, attr_drawable);
         }

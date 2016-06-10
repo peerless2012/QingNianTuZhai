@@ -12,5 +12,5 @@ public interface ColorUiInterface {
 
     public View getView();
 
-    public void setTheme(Resources.Theme themeId);
+    public void setTheme(Resources.Theme themeId,ThemeInfo themeInfo);
 }

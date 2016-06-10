@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 
@@ -39,7 +40,7 @@ public class ColorButton extends Button implements ColorUiInterface {
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         ViewAttributeUtil.applyBackgroundDrawable(this, themeId, attr_background);
         ViewAttributeUtil.applyTextAppearance(this, themeId, attr_textAppreance);
     }

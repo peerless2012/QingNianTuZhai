@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 /**
@@ -91,7 +92,7 @@ public class ColorToolBar extends Toolbar implements ColorUiInterface {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         TypedArray typedArray = themeId.obtainStyledAttributes(new int[]{
                 android.support.v7.appcompat.R.attr.colorPrimary
         });

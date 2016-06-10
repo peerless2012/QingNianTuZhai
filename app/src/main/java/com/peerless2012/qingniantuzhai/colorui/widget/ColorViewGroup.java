@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 /**
@@ -35,7 +36,7 @@ public abstract class ColorViewGroup extends ViewGroup implements ColorUiInterfa
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         ViewAttributeUtil.applyBackgroundDrawable(this, themeId , attr_background);
     }
 }

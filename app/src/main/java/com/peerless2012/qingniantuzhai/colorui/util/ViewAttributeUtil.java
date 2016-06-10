@@ -1,6 +1,5 @@
 package com.peerless2012.qingniantuzhai.colorui.util;
 
-
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -31,6 +30,9 @@ public class ViewAttributeUtil {
 
     public static int getBackgroundAttibute(AttributeSet attr) {
         return getAttributeValue(attr , android.R.attr.background);
+    }
+    public static int getBackgroundAttibute(AttributeSet attr,int attrId) {
+        return getAttributeValue(attr , attrId);
     }
 
     public static int getCheckMarkAttribute(AttributeSet attr) {

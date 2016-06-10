@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 /**
@@ -42,7 +43,7 @@ public class ColorTextView extends TextView implements ColorUiInterface {
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         Log.d("COLOR", "id = " + getId());
         if (attr_drawable != -1) {
             ViewAttributeUtil.applyBackgroundDrawable(this, themeId, attr_drawable);

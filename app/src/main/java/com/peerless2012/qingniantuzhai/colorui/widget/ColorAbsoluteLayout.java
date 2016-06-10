@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AbsoluteLayout;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 
@@ -37,7 +38,7 @@ public class ColorAbsoluteLayout extends AbsoluteLayout implements ColorUiInterf
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         if(attr_background != -1) {
             ViewAttributeUtil.applyBackgroundDrawable(this, themeId, attr_background);
         }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
 
 import java.lang.reflect.Field;
@@ -46,7 +47,7 @@ public class ColorRecycleView extends RecyclerView implements ColorUiInterface {
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId) {
+    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
         if(attr_background != -1) {
             try {
             ViewAttributeUtil.applyBackgroundDrawable(this, themeId, attr_background);

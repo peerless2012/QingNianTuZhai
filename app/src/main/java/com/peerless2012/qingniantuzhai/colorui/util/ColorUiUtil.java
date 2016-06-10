@@ -25,7 +25,7 @@ public class ColorUiUtil {
 
     private static void doChange(View rootView, Resources.Theme theme, ThemeInfo themeInfo){
         if (rootView instanceof ColorUiInterface) {
-            ((ColorUiInterface) rootView).setTheme(theme);
+            ((ColorUiInterface) rootView).setTheme(theme,themeInfo);
             if (rootView instanceof ViewGroup) {
                 int count = ((ViewGroup) rootView).getChildCount();
                 for (int i = 0; i < count; i++) {
@@ -87,7 +87,7 @@ public class ColorUiUtil {
      */
     public static void changeTheme(View rootView, Resources.Theme theme) {
         ThemeInfo themeInfo = analysisTheme(rootView,theme);
-        doChange(rootView,theme,null);
+        doChange(rootView,theme,themeInfo);
     }
 
     private static ThemeInfo analysisTheme(View rootView, Resources.Theme theme) {
