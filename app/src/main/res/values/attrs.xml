@@ -8,6 +8,7 @@
 
     //日间/夜间模式
     <attr name="MainBg" format="reference|color"/>
+    <attr name="MainBgInvert" format="reference|color"/>
     <attr name="MainTextColor" format="reference|color"/>
     <attr name="MainTextColorInvert" format="reference|color"/>
     <attr name="SecondBg" format="reference|color"/>

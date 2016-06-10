@@ -4,8 +4,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorPrimary_dark">#263238</color>
+    <color name="colorPrimaryDark_dark">#1E282D</color>
+    <color name="colorAccent_dark">#a45771</color>
+
+
     //日间主题用色
     <color name="main_bg_normal">#f6f6f6</color>
+    <color name="main_bg_normal_invert">#222222</color>
     <color name="main_textcolor_normal">#333333</color>
     <color name="main_textcolor_invert_normal">#FEFEFE</color>
     <color name="second_bg_normal">#f6f6f6</color>

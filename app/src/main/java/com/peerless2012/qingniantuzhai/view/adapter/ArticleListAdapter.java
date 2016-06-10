@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ArticleListHolder>{
 
-    private LayoutInflater layoutInflater;
     private ImageLoader imageLoader;
     private List<ArticleItem> articleItems;
     private IOnItemClickListener listener;
@@ -52,9 +51,8 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     @Override
     public ArticleListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (layoutInflater == null) {
+        LayoutInflater layoutInflater;
             layoutInflater = LayoutInflater.from(parent.getContext());
-        }
         if (imageLoader == null) {
             imageLoader = ImageCacheManager.getInstance().getImageLoader();
         }

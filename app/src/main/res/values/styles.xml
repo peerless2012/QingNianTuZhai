@@ -3,9 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
     </style>
     <style name="AppTheme.HomeNoActionBar" parent="AppTheme.NoActionBar">
     </style>
@@ -20,18 +18,70 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="AppTheme.Light" parent="AppTheme.NoActionBar">
+        <!--ToolBar用色-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!--ToolBar样式-->
+        <item name="toolbarStyle">@style/ToolBarLightStyle</item>
+
+        <!--内容用色-->
         <item name="MainBg">@color/main_bg_normal</item>
+        <item name="MainBgInvert">@color/main_bg_normal_invert</item>
         <item name="MainTextColor">@color/main_textcolor_normal</item>
         <item name="MainTextColorInvert">@color/main_textcolor_invert_normal</item>
         <item name="SecondBg">@color/second_bg_normal</item>
         <item name="SecondTextColor">@color/second_textcolor_normal</item>
     </style>
 
+    <style name="ToolBarLightStyle" parent="@style/Widget.AppCompat.Toolbar">
+        <!--ToolBarwidget颜色-->
+        <item name="colorControlNormal">?attr/MainTextColorInvert</item>
+        <!--ToolBar 文字位置-->
+        <item name="android:gravity">center_vertical</item>
+        <!--管理字体颜色和icon图标颜色-->
+
+        <item name="titleTextColor">?attr/MainTextColorInvert</item>
+        <item name="subtitleTextColor">?attr/MainTextColorInvert</item>
+
+        <item name="android:background">?colorPrimary</item>
+        <!--ToolBar Overflow样式-->
+        <item name="popupTheme">@style/ToolBarOverFlowLightStyle</item>
+
+    </style>
+
+    <style name="ToolBarOverFlowLightStyle" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:background">?attr/MainBg</item>
+        <item name="android:textColorPrimary">?attr/MainTextColor</item>
+    </style>
+
     <style name="AppTheme.Dark" parent="AppTheme.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
+        <item name="colorAccent">@color/colorAccent_dark</item>
+
+        <!--ToolBar样式-->
+        <item name="toolbarStyle">@style/ToolBarDarkStyle</item>
+
+        <!--内容用色-->
         <item name="MainBg">@color/main_bg_dark</item>
         <item name="MainTextColor">@color/main_textcolor_dark</item>
         <item name="MainTextColorInvert">@color/main_textcolor_invert_dark</item>
         <item name="SecondBg">@color/second_bg_dark</item>
         <item name="SecondTextColor">@color/second_textcolor_dark</item>
+    </style>
+
+    <style name="ToolBarDarkStyle" parent="@style/Widget.AppCompat.Toolbar">
+        <!--ToolBar 文字位置-->
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">#FF0000</item>
+    </style>
+
+    <style name="ToolBarOverFlowDarkStyle" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:windowBackground">@color/main_bg_dark</item>
+        <item name="android:textColorPrimary">@color/main_textcolor_dark</item>
+        <item name="android:colorBackground">@color/main_bg_dark</item>
     </style>
 </resources>

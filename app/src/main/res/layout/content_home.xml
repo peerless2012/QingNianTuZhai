@@ -12,10 +12,10 @@
     app:overlay="true"
     app:wave_show="true"
     app:wave_color="@android:color/transparent"
-    app:progress_colors="@array/material_colors"
-    tools:context=".HomeActivity">
+    app:progress_colors="@array/material_colors">
 
-    <android.support.v7.widget.RecyclerView
+    <com.peerless2012.qingniantuzhai.colorui.widget.ColorRecycleView
+        android:background="?attr/MainBg"
         android:id="@+id/article_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
