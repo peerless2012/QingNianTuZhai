@@ -38,6 +38,9 @@ public class ThemeInfo {
     @AttrTag(tag = "SecondTextColorInvert",value = R.attr.SecondTextColor)
     private int secondTextColorInvertRes;
 
+    @AttrTag(tag = "toolbarStyle",value = android.support.v7.appcompat.R.attr.toolbarStyle)
+    private int toolbarStyle;
+
     public int getBackgroundRes() {
         return backgroundRes;
     }
@@ -100,6 +103,14 @@ public class ThemeInfo {
 
     public void setSecondTextColorInvertRes(int secondTextColorInvertRes) {
         this.secondTextColorInvertRes = secondTextColorInvertRes;
+    }
+
+    public int getToolbarStyle() {
+        return toolbarStyle;
+    }
+
+    public void setToolbarStyle(int toolbarStyle) {
+        this.toolbarStyle = toolbarStyle;
     }
 
     @Override

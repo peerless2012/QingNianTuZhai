@@ -27,6 +27,7 @@ public class ColorCardView extends CardView implements ColorUiInterface {
     public ColorCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.attr_background = ViewAttributeUtil.getBackgroundAttibute(attrs);
+        setTheme(getContext().getTheme(),null);
     }
 
     public ColorCardView(Context context, AttributeSet attrs, int defStyleAttr) {

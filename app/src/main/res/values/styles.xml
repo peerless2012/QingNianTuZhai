@@ -52,7 +52,7 @@
     </style>
 
     <style name="ToolBarOverFlowLightStyle" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="android:background">?attr/MainBg</item>
+        <item name="android:background">@null</item>
         <item name="android:textColorPrimary">?attr/MainTextColor</item>
     </style>
 
@@ -76,11 +76,22 @@
     <style name="ToolBarDarkStyle" parent="@style/Widget.AppCompat.Toolbar">
         <!--ToolBar 文字位置-->
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">#FF0000</item>
+        <!--ToolBar Overflow样式-->
+
+        <!--ToolBarwidget颜色-->
+        <item name="colorControlNormal">?attr/MainTextColorInvert</item>
+
+        <!--管理字体颜色和icon图标颜色-->
+        <item name="titleTextColor">?attr/MainTextColorInvert</item>
+        <item name="subtitleTextColor">?attr/MainTextColorInvert</item>
+
+        <item name="android:background">?colorPrimary</item>
+        <!--ToolBar Overflow样式-->
+        <item name="popupTheme">@style/ToolBarOverFlowDarkStyle</item>
     </style>
 
     <style name="ToolBarOverFlowDarkStyle" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="android:windowBackground">@color/main_bg_dark</item>
+        <item name="android:background">@null</item>
         <item name="android:textColorPrimary">@color/main_textcolor_dark</item>
         <item name="android:colorBackground">@color/main_bg_dark</item>
     </style>

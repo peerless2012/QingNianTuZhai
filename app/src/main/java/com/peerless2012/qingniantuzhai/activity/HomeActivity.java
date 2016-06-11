@@ -2,6 +2,8 @@ package com.peerless2012.qingniantuzhai.activity;
 
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +18,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
+
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
@@ -402,9 +407,8 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onDrawerClosed(View drawerView) {
         if (newTheme > 0){
-            setTheme(newTheme);
             View decorView = getWindow().getDecorView();
-            ColorUiUtil.changeTheme(decorView ,getTheme());
+            changeTheme(decorView,newTheme);
             newTheme = -1;
         }
     }

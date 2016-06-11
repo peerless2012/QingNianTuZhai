@@ -69,7 +69,7 @@ public class ColorToolBar extends Toolbar implements ColorUiInterface {
             Log.i(TAG, "ColorToolBar: "+tv.toString());
         }
 
-
+        setTitleTextColor(getResources().getColor(R.color.main_textcolor_invert_normal));
     }
 
     public ColorToolBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -98,6 +98,14 @@ public class ColorToolBar extends Toolbar implements ColorUiInterface {
         });
         int color = typedArray.getColor(0, Color.GREEN);
         setBackgroundColor(color);
+        int toolbarStyle = themeInfo.getToolbarStyle();
+        TypedArray popThemeArray = getContext().obtainStyledAttributes(toolbarStyle, android.support.v7.appcompat.R.styleable.Toolbar);
+        int popThemeArrayResourceId = popThemeArray.getResourceId(android.support.v7.appcompat.R.styleable.Toolbar_popupTheme, R.style.ToolBarOverFlowLightStyle);
+        setPopupTheme(popThemeArrayResourceId);
+        getMenu().clear();
+        inflateMenu(R.menu.activity_main);
+        // TODO overflow主题还不能随着更改，待解决。
+        popThemeArray.recycle();
         if (attr_background > 0){
 
 //            setPopupTheme(a.getResourceId(android.support.v7.appcompat.R.styleable.Toolbar_popupTheme, 0));
