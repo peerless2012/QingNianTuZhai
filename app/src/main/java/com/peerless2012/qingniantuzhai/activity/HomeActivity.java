@@ -3,6 +3,8 @@ package com.peerless2012.qingniantuzhai.activity;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.FloatingActionButton;
@@ -27,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.peerless2012.qingniantuzhai.R;
+import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ColorUiUtil;
 import com.peerless2012.qingniantuzhai.interfaces.IOnItemClickListener;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
@@ -408,8 +411,10 @@ public class HomeActivity extends BaseActivity
     public void onDrawerClosed(View drawerView) {
         if (newTheme > 0){
             View decorView = getWindow().getDecorView();
-            changeTheme(decorView,newTheme);
+            ThemeInfo themeInfo = changeTheme(decorView, newTheme);
             newTheme = -1;
+            // 如果想改变状态栏颜色，那么内容区域暂时就不能设置fitsSystemWind，因为ToolBar会自动添加View，然后盖住DrawLayout的状态栏的View，导致设置的颜色被覆盖，从而无效
+            mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(themeInfo.getColorPrimaryDark()));
         }
     }
 

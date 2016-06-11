@@ -85,9 +85,10 @@ public class ColorUiUtil {
      *
      * @param rootView
      */
-    public static void changeTheme(View rootView, Resources.Theme theme) {
+    public static ThemeInfo changeTheme(View rootView, Resources.Theme theme) {
         ThemeInfo themeInfo = analysisTheme(rootView,theme);
         doChange(rootView,theme,themeInfo);
+        return themeInfo;
     }
 
     private static ThemeInfo analysisTheme(View rootView, Resources.Theme theme) {

@@ -12,6 +12,15 @@ import com.peerless2012.qingniantuzhai.colorui.util.AttrTag;
  */
 public class ThemeInfo {
 
+    @AttrTag(tag = "colorPrimary",value = android.support.v7.appcompat.R.attr.colorPrimary)
+    private int colorPrimary;
+
+    @AttrTag(tag = "colorPrimaryDark",value = android.support.v7.appcompat.R.attr.colorPrimaryDark)
+    private int colorPrimaryDark;
+
+    @AttrTag(tag = "colorAccent",value = android.support.v7.appcompat.R.attr.colorAccent)
+    private int colorAccent;
+
     @AttrTag(tag = "MainBg",value = R.attr.MainBg)
     private int backgroundRes;
 
@@ -40,6 +49,30 @@ public class ThemeInfo {
 
     @AttrTag(tag = "toolbarStyle",value = android.support.v7.appcompat.R.attr.toolbarStyle)
     private int toolbarStyle;
+
+    public int getColorPrimary() {
+        return colorPrimary;
+    }
+
+    public void setColorPrimary(int colorPrimary) {
+        this.colorPrimary = colorPrimary;
+    }
+
+    public int getColorPrimaryDark() {
+        return colorPrimaryDark;
+    }
+
+    public void setColorPrimaryDark(int colorPrimaryDark) {
+        this.colorPrimaryDark = colorPrimaryDark;
+    }
+
+    public int getColorAccent() {
+        return colorAccent;
+    }
+
+    public void setColorAccent(int colorAccent) {
+        this.colorAccent = colorAccent;
+    }
 
     public int getBackgroundRes() {
         return backgroundRes;
