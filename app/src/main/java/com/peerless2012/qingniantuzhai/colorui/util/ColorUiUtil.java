@@ -23,7 +23,7 @@ public class ColorUiUtil {
 
     private static final String TAG = "ColorUiUtil";
 
-    private static void doChange(View rootView, Resources.Theme theme, ThemeInfo themeInfo){
+    public static void doChange(View rootView, Resources.Theme theme, ThemeInfo themeInfo){
         if (rootView instanceof ColorUiInterface) {
             ((ColorUiInterface) rootView).setTheme(theme,themeInfo);
             if (rootView instanceof ViewGroup) {
@@ -51,6 +51,30 @@ public class ColorUiUtil {
                     e5.printStackTrace();
                 }
             }
+            if (rootView instanceof RecyclerView) {
+                try {
+                    Field localField = RecyclerView.class
+                            .getDeclaredField("mRecycler");
+                    localField.setAccessible(true);
+                    Method localMethod = Class.forName(
+                            "android.support.v7.widget.RecyclerView$Recycler")
+                            .getDeclaredMethod("clear", new Class[0]);
+                    localMethod.setAccessible(true);
+                    localMethod.invoke(localField.get(rootView), new Object[0]);
+                    Log.e("", "### 清空RecyclerView的Recycer ");
+                    rootView.invalidate();
+                } catch (NoSuchFieldException e1) {
+                    e1.printStackTrace();
+                } catch (ClassNotFoundException e2) {
+                    e2.printStackTrace();
+                } catch (NoSuchMethodException e3) {
+                    e3.printStackTrace();
+                } catch (IllegalAccessException e4) {
+                    e4.printStackTrace();
+                } catch (InvocationTargetException e5) {
+                    e5.printStackTrace();
+                }
+            }
         } else {
             if (rootView instanceof ViewGroup) {
                 int count = ((ViewGroup) rootView).getChildCount();
@@ -65,6 +89,30 @@ public class ColorUiUtil {
                     Method localMethod = Class.forName("android.widget.AbsListView$RecycleBin").getDeclaredMethod("clear", new Class[0]);
                     localMethod.setAccessible(true);
                     localMethod.invoke(localField.get(rootView), new Object[0]);
+                } catch (NoSuchFieldException e1) {
+                    e1.printStackTrace();
+                } catch (ClassNotFoundException e2) {
+                    e2.printStackTrace();
+                } catch (NoSuchMethodException e3) {
+                    e3.printStackTrace();
+                } catch (IllegalAccessException e4) {
+                    e4.printStackTrace();
+                } catch (InvocationTargetException e5) {
+                    e5.printStackTrace();
+                }
+            }
+            if (rootView instanceof RecyclerView) {
+                try {
+                    Field localField = RecyclerView.class
+                            .getDeclaredField("mRecycler");
+                    localField.setAccessible(true);
+                    Method localMethod = Class.forName(
+                            "android.support.v7.widget.RecyclerView$Recycler")
+                            .getDeclaredMethod("clear", new Class[0]);
+                    localMethod.setAccessible(true);
+                    localMethod.invoke(localField.get(rootView), new Object[0]);
+                    Log.e("", "### 清空RecyclerView的Recycer ");
+                    rootView.invalidate();
                 } catch (NoSuchFieldException e1) {
                     e1.printStackTrace();
                 } catch (ClassNotFoundException e2) {
@@ -184,29 +232,6 @@ public class ColorUiUtil {
     }
 
     public static void clearRecyclerViewRecyclerBin(View rootView) {
-        if (rootView instanceof RecyclerView) {
-            try {
-                Field localField = RecyclerView.class
-                        .getDeclaredField("mRecycler");
-                localField.setAccessible(true);
-                Method localMethod = Class.forName(
-                        "android.support.v7.widget.RecyclerView$Recycler")
-                        .getDeclaredMethod("clear", new Class[0]);
-                localMethod.setAccessible(true);
-                localMethod.invoke(localField.get(rootView), new Object[0]);
-                Log.e("", "### 清空RecyclerView的Recycer ");
-                rootView.invalidate();
-            } catch (NoSuchFieldException e1) {
-                e1.printStackTrace();
-            } catch (ClassNotFoundException e2) {
-                e2.printStackTrace();
-            } catch (NoSuchMethodException e3) {
-                e3.printStackTrace();
-            } catch (IllegalAccessException e4) {
-                e4.printStackTrace();
-            } catch (InvocationTargetException e5) {
-                e5.printStackTrace();
-            }
-        }
+
     }
 }

@@ -264,7 +264,7 @@ public class HomeActivity extends BaseActivity
     private void changeTheme(boolean invert){
         boolean dayMode = mSPUtils.isDayMode();
         boolean newMode = invert ? !dayMode : dayMode;
-        String title = getString(!dayMode ? R.string.app_theme_day : R.string.app_theme_night);
+        String title = getString(!newMode ? R.string.app_theme_day : R.string.app_theme_night);
         int theme = newMode ? R.style.AppTheme_Light : R.style.AppTheme_Dark;
         newTheme = theme;
         mNavigationView.getMenu().findItem(R.id.nav_theme).setTitle(title);
