@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="androidutils">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/androidutils.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
