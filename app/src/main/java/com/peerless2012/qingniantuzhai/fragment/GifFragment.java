@@ -57,7 +57,7 @@ public class GifFragment extends BaseFragment{
             public void onClick(View v) {
                 FragmentActivity activity = getActivity();
                 if (activity != null && activity instanceof DetailActivity) {
-                    ((DetailActivity)activity).inFullScreenMode();
+//                    ((DetailActivity)activity).inFullScreenMode();
                 }
             }
         });

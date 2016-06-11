@@ -1,23 +1,13 @@
 package com.peerless2012.qingniantuzhai.activity;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-
 import com.peerless2012.qingniantuzhai.R;
-import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
-import com.peerless2012.qingniantuzhai.colorui.util.ColorUiUtil;
-import com.peerless2012.qingniantuzhai.utils.SPUtils;
 import java.io.File;
 
 /**
@@ -27,28 +17,18 @@ import java.io.File;
 * @Version V1.0
 * @Description: Activity的基类
 */
- abstract public class BaseActivity extends AppCompatActivity {
+ abstract public class BaseActivity extends ThemeAppcompatActivity {
     protected String cacheDir;
     protected ViewGroup.LayoutParams contentViewParams;
     protected Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme();
         super.onCreate(savedInstanceState);
         initActivity();
         initView();
         initListener();
         initData();
-    }
-
-    private void setTheme() {
-        setTheme(SPUtils.getInstance(this).getTheme());
-    }
-
-    ThemeInfo changeTheme(View rootView, int theme){
-        setTheme(theme);
-        return ColorUiUtil.changeTheme(rootView ,getTheme());
     }
 
     private void initActivity() {
@@ -64,10 +44,12 @@ import java.io.File;
             }
         }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (!isHome() && actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        if (toolbar != null){
+            setSupportActionBar(toolbar);
+            ActionBar actionBar = getSupportActionBar();
+            if (!isHome() && actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         File externalCache = getExternalCacheDir();

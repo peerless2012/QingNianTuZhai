@@ -56,6 +56,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initView() {
+        setUpStatusBar();
         Intent intent = new Intent(this, DownloadImgsService.class);
         downloadConnection = new ServiceConnection() {
             @Override

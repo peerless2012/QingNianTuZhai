@@ -6,33 +6,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
-    </android.support.design.widget.AppBarLayout>
 
     <com.peerless2012.qingniantuzhai.view.widget.PhotoViewPager
         android:id="@+id/article_detail_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.peerless2012.qingniantuzhai.colorui.widget.ColorToolBar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#33FFFFFF">
+        android:background="#66000000">
 
         <TextView
             android:id="@+id/article_detail_desc"
@@ -40,9 +39,10 @@
             android:layout_height="100dp"
             android:padding="15dp"
             android:text="这是新闻内容"
-            android:textColor="@android:color/white"/>
+            android:textColor="@color/main_textcolor_invert_normal"/>
 
         <ImageView
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:id="@+id/article_detail_save"
             android:layout_width="36dp"
             android:layout_height="36dp"

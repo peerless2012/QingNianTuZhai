@@ -48,7 +48,7 @@ public class SPUtils {
     }
 
     public void restoreTodaysFirst(){
-        mPreferences.edit().putLong(HOME_LAST_LOAD, System.currentTimeMillis()).apply();
+        mPreferences.edit().putLong(HOME_LAST_LOAD, System.currentTimeMillis()).commit();
     }
 
     public int getTheme(){
@@ -56,7 +56,7 @@ public class SPUtils {
     }
 
     public void restoreTheme(@StyleRes int style){
-        mPreferences.edit().putInt(APP_THEME,style).apply();
+        mPreferences.edit().putInt(APP_THEME,style).commit();
     }
 
     public boolean isDayMode(){

@@ -264,10 +264,11 @@ public class HomeActivity extends BaseActivity
     private void changeTheme(boolean invert){
         boolean dayMode = mSPUtils.isDayMode();
         boolean newMode = invert ? !dayMode : dayMode;
-        String title = getString(newMode ? R.string.app_theme_day : R.string.app_theme_night);
+        String title = getString(!dayMode ? R.string.app_theme_day : R.string.app_theme_night);
         int theme = newMode ? R.style.AppTheme_Light : R.style.AppTheme_Dark;
         newTheme = theme;
         mNavigationView.getMenu().findItem(R.id.nav_theme).setTitle(title);
+        if (invert)
         mSPUtils.restoreTheme(theme);
     }
 
@@ -410,11 +411,10 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onDrawerClosed(View drawerView) {
         if (newTheme > 0){
-            View decorView = getWindow().getDecorView();
-            ThemeInfo themeInfo = changeTheme(decorView, newTheme);
-            newTheme = -1;
+            ThemeInfo themeInfo = changeTheme(newTheme);
             // 如果想改变状态栏颜色，那么内容区域暂时就不能设置fitsSystemWind，因为ToolBar会自动添加View，然后盖住DrawLayout的状态栏的View，导致设置的颜色被覆盖，从而无效
             mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(themeInfo.getColorPrimaryDark()));
+            newTheme = -1;
         }
     }
 

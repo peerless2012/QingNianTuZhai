@@ -46,18 +46,6 @@ public class ColorToolBar extends Toolbar implements ColorUiInterface {
         }
             Log.i(TAG, "ColorToolBar: -----------------------------------------------------------");
         TypedValue tv = new TypedValue();
-        /*int identifier = context.getResources().getSystem().getIdentifier("background", "drawable", "android");
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, android.support.v7.appcompat.R.styleable.Toolbar);
-        int indexCount = typedArray.getIndexCount();
-        for (int i = 0; i < indexCount; i++) {
-            typedArray.getValue(i,tv);
-            Log.i(TAG, "ColorToolBar: "+tv.toString());
-        }
-        typedArray.recycle();*/
-//        TypedArray typedArray = context.getTheme().obtainStyledAttributes(new int[]{
-//                android.support.v7.appcompat.R.attr.toolbarStyle
-//        });
-//        TypedArray typedArray = context.obtainStyledAttributes(android.support.v7.appcompat.R.styleable.Toolbar);
 
         final TintTypedArray typedArray = TintTypedArray.obtainStyledAttributes(getContext(), attrs,
                 android.support.v7.appcompat.R.styleable.Toolbar, 0, 0);
