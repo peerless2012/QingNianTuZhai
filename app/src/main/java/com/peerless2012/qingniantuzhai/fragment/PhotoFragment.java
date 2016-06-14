@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.peerless2012.qingniantuzhai.activity.DetailActivity;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import uk.co.senab.photoview.PhotoView;
@@ -43,7 +44,10 @@ public class PhotoFragment extends BaseFragment{
             }
         });
         ArticleDetail articleDetail = getArguments().getParcelable(ARTICLE_DETAIL);
-        Glide.with(this).load(articleDetail.getImg()).into(photoView);
+        Glide.with(this)
+                .load(articleDetail.getImg())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(photoView);
         return photoView;
     }
 

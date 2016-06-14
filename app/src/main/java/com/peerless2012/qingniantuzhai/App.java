@@ -1,21 +1,38 @@
 package com.peerless2012.qingniantuzhai;
 
 import android.app.Application;
-import android.os.Build;
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.load.engine.cache.DiskCache;
+import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
+import com.bumptech.glide.load.engine.cache.LruResourceCache;
+import com.bumptech.glide.module.GlideModule;
 import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
-import com.peerless2012.qingniantuzhai.utils.FileUtils;
 import java.io.File;
 
 /**
- * Created by Administrator on 2016/1/19.
- */
+* @Author peerless2012
+* @Email peerless2012@126.com
+* @DateTime 2016/6/1 11:27
+* @Version V1.0
+* @Description: 全局Application类
+*/
 public class App extends Application{
 
-    private File cacheDir;
+    public static final int DEFAULT_DISK_CACHE_SIZE = 200 * 1024 * 1024;
 
-    private File fileDir;
+    public static final int DEFAULT_MEMORY_CACHE_SIZE;// 单位：字节，默认内存缓存的大小，分配给应用的总内存的1/8
+
+    static {
+        DEFAULT_MEMORY_CACHE_SIZE = (int) (Runtime.getRuntime().maxMemory() / 8);
+    }
+
+    private File cacheDir;
 
     @Override
     public void onCreate() {
@@ -32,17 +49,6 @@ public class App extends Application{
                 .logLevel(LogLevel.NONE)        // default LogLevel.FULL
                 .methodOffset(2)                // default 0
                 .logTool(new AndroidLogTool()); // custom log tool, optional
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            File[] caches = getExternalCacheDirs();
-            if (caches.length > 1)
-                cacheDir = caches[1];
-            else
-                cacheDir = caches[0];
-        }else {
-            cacheDir = getExternalCacheDir();
-        }
-
     }
 
     public File getAppCacheDir(){
@@ -53,14 +59,13 @@ public class App extends Application{
      * 初始化图片缓存管理器
      */
     private void initImageCacheManager() {
-        StringBuffer sb = new StringBuffer();
-        File externalCacheDir = getExternalFilesDir(null);
-        if (externalCacheDir != null) {
-            sb.append(externalCacheDir.getAbsolutePath()).append(File.separator).append("imgcache");
+        File[] externalCacheDirs = ContextCompat.getExternalCacheDirs(this);
+        if (externalCacheDirs == null || externalCacheDirs.length == 0){
+            cacheDir = getCacheDir();
+        }else if (externalCacheDirs.length == 2){
+            cacheDir = externalCacheDirs[1];
         }else {
-            sb.append(getFilesDir().getAbsolutePath()).append(File.separator).append("imgcache");
+            cacheDir = externalCacheDirs[0];
         }
-        String path = sb.toString();
-        File diskCacheDir = FileUtils.createDir(path);
     }
 }

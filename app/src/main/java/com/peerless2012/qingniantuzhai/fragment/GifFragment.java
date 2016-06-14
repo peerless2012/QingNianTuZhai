@@ -1,22 +1,17 @@
 package com.peerless2012.qingniantuzhai.fragment;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.github.lazylibrary.util.ToastUtils;
-import com.peerless2012.qingniantuzhai.activity.DetailActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.peerless2012.qingniantuzhai.interfaces.IOnImgDownloadCompleteListener;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
-import com.peerless2012.qingniantuzhai.service.DownloadImgsService;
 import java.io.File;
 import pl.droidsonroids.gif.AnimationListener;
 import pl.droidsonroids.gif.GifDrawable;
@@ -45,15 +40,6 @@ public class GifFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         gifImageView = new GifImageView(container.getContext());
-        gifImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentActivity activity = getActivity();
-                if (activity != null && activity instanceof DetailActivity) {
-//                    ((DetailActivity)activity).inFullScreenMode();
-                }
-            }
-        });
         return gifImageView;
     }
 
@@ -66,34 +52,14 @@ public class GifFragment extends BaseFragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         articleDetail = getArguments().getParcelable(ARTICLE_DETAIL);
-        String fileNameByUrl = getFileNameByUrl(articleDetail.getImg());
-        if (isFileExists(fileNameByUrl)){
-            displayImgs(new File(cacheDir,fileNameByUrl).getAbsolutePath());
-        }else {
-            listener = new IOnImgDownloadCompleteListener() {
-                @Override
-                public void onImgDownloadComplete(String downloadUrl,String path) {
-                    if (path != null){
-                        displayImgs(path);
-                    }else {
-                        ToastUtils.showToast(getActivity(),"加载失败");
+        Glide.with(this)
+                .load(articleDetail.getImg())
+                .downloadOnly(new SimpleTarget<File>() {
+                    @Override
+                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                        displayImgs(resource.getAbsolutePath());
                     }
-                }
-            };
-            serviceConnection = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    DownloadImgsService.DownloadBinder downloadBinder = (DownloadImgsService.DownloadBinder) service;
-                    downloadBinder.add(articleDetail.getImg(),listener);
-                }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-
-                }
-            };
-            bindService();
-        }
+                });
     }
 
     private void displayImgs(String path){
@@ -121,30 +87,6 @@ public class GifFragment extends BaseFragment{
         if (gifImageView != null) {
             gifImageView.setImageDrawable(null);
         }
-        if (serviceConnection != null){
-            unBindService();
-        }
         super.onDestroy();
-    }
-
-    private ServiceConnection serviceConnection;
-
-    private void bindService(){
-        Intent intent = new Intent(getContext(), DownloadImgsService.class);
-        getContext().bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
-    }
-
-    private void unBindService(){
-        getContext().unbindService(serviceConnection);
-    }
-
-    private boolean isFileExists (String path){
-        File file = new File(cacheDir,path);
-        return file.exists();
-    }
-
-    private String getFileNameByUrl(String url){
-        int indexOf = url.lastIndexOf("/");
-        return url.substring(indexOf + 1);
     }
 }

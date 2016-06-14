@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.interfaces.IOnItemClickListener;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
@@ -70,6 +71,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         holder.articleTitle.setText(articleItem.getTitle());
         Glide.with(holder.articlePreViewImg.getContext())
                 .load(articleItem.getPreviewImgUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.articlePreViewImg);
         holder.itemView.setOnClickListener(recycleItemClickListener);
         holder.itemView.setTag(R.id.home_adapter_position_tag,position);
