@@ -32,7 +32,7 @@
         <activity
             android:name=".activity.DetailActivity"/>
 
-        <service android:name=".service.DownloadImgsService"/>
+        <service android:name=".service.SaveImgsService"/>
 
         <activity android:name=".activity.SettingActivity">
         </activity>

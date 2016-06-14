@@ -19,6 +19,8 @@
 
 
     <style name="AppTheme.Light" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@color/main_bg_normal</item>
+
         <!--ToolBar用色-->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -58,6 +60,8 @@
     </style>
 
     <style name="AppTheme.Dark" parent="AppTheme.NoActionBar">
+
+        <item name="android:windowBackground">@color/main_bg_dark</item>
 
         <item name="colorPrimary">@color/colorPrimary_dark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>

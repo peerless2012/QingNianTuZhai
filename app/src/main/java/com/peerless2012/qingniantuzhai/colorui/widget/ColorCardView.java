@@ -2,9 +2,14 @@ package com.peerless2012.qingniantuzhai.colorui.widget;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.colorui.ColorUiInterface;
 import com.peerless2012.qingniantuzhai.colorui.ThemeInfo;
 import com.peerless2012.qingniantuzhai.colorui.util.ViewAttributeUtil;
@@ -41,9 +46,13 @@ public class ColorCardView extends CardView implements ColorUiInterface {
     }
 
     @Override
-    public void setTheme(Resources.Theme themeId, ThemeInfo themeInfo) {
+    public void setTheme(Resources.Theme theme, ThemeInfo themeInfo) {
         if(attr_background != -1) {
-            ViewAttributeUtil.applyBackgroundDrawable(this, themeId, attr_background);
+            TypedArray ta = theme.obtainStyledAttributes(new int[]{attr_background});
+            Drawable drawable = ta.getDrawable(0);
+            int color = ta.getColor(0, ContextCompat.getColor(getContext(), R.color.main_bg_normal));
+            ta.recycle();
+            setCardBackgroundColor(color);
         }
     }
 }

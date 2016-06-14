@@ -8,7 +8,8 @@ package com.peerless2012.qingniantuzhai.interfaces;
  * @Description
  */
 public interface IDownloadService {
-    public void add(String url,IOnImgDownloadCompleteListener l);
-    public void removeListener(String url, IOnImgDownloadCompleteListener l);
+
     public void save(String url);
+
+    public void quite();
 }

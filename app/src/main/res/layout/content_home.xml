@@ -15,7 +15,6 @@
     app:progress_colors="@array/material_colors">
 
     <com.peerless2012.qingniantuzhai.colorui.widget.ColorRecycleView
-        android:background="?attr/MainBg"
         android:id="@+id/article_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

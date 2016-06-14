@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
-import com.peerless2012.qingniantuzhai.service.DownloadImgsService;
+import com.peerless2012.qingniantuzhai.service.SaveImgsService;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
 import com.peerless2012.qingniantuzhai.utils.ThemeUtils;
 import com.peerless2012.qingniantuzhai.view.adapter.ArticleDetailPagerAdapter;
@@ -48,7 +48,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private ArticleDetailPagerAdapter articleDetailPagerAdapter;
     private Subscription subscribe;
     private ServiceConnection downloadConnection;
-    private DownloadImgsService.DownloadBinder downloadBinder;
+    private SaveImgsService.DownloadBinder downloadBinder;
     @Override
     protected int getContentLayout() {
         return R.layout.activity_detail;
@@ -57,11 +57,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initView() {
         setUpStatusBar();
-        Intent intent = new Intent(this, DownloadImgsService.class);
+        Intent intent = new Intent(this, SaveImgsService.class);
         downloadConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                downloadBinder = (DownloadImgsService.DownloadBinder) service;
+                downloadBinder = (SaveImgsService.DownloadBinder) service;
             }
 
             @Override
@@ -69,6 +69,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
             }
         };
+        startService(intent);
         bindService(intent,downloadConnection,BIND_AUTO_CREATE);
         articlePager = getView(R.id.article_detail_pager);
         articleItemDesc = getView(R.id.article_detail_desc);
@@ -150,6 +151,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onNext(List<ArticleDetail> articleDetails) {
                         articleDetailPagerAdapter.addData(articleDetails);
+                        ArticleDetail articleDetail = (ArticleDetail) articleDetailPagerAdapter.getItemByPosition(0);
+                        articleItemDesc.setText(articleDetail.getDesc());
                     }
                 });
     }
@@ -160,6 +163,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
+        downloadBinder.quite();
         unbindService(downloadConnection);
         if (!subscribe.isUnsubscribed()) subscribe.unsubscribe();
         articlePager.removeOnPageChangeListener(listener);

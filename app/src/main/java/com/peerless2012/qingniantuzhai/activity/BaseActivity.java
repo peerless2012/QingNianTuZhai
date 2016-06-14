@@ -17,7 +17,7 @@ import java.io.File;
 * @Version V1.0
 * @Description: Activity的基类
 */
- abstract public class BaseActivity extends ThemeAppcompatActivity {
+ abstract public class BaseActivity extends ThemeCompatActivity {
     protected String cacheDir;
     protected ViewGroup.LayoutParams contentViewParams;
     protected Toolbar toolbar;

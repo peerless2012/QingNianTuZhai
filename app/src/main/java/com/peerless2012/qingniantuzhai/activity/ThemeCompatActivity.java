@@ -1,6 +1,7 @@
 package com.peerless2012.qingniantuzhai.activity;
 
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -24,7 +25,7 @@ import com.peerless2012.qingniantuzhai.utils.SPUtils;
  * @Version V1.0
  * @Description :
  */
-public class ThemeAppcompatActivity extends AppCompatActivity{
+public class ThemeCompatActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +40,10 @@ public class ThemeAppcompatActivity extends AppCompatActivity{
 
     ThemeInfo changeTheme(int theme){
         setTheme(theme);
+        TypedArray typedArray = getTheme().obtainStyledAttributes(new int[]{android.R.attr.windowBackground});
+        Drawable drawable = typedArray.getDrawable(0);
+        getWindow().setBackgroundDrawable(drawable);
+        typedArray.recycle();
         return ColorUiUtil.changeTheme(getWindow().getDecorView() ,getTheme());
     }
 

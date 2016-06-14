@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.peerless2012.qingniantuzhai.activity.DetailActivity;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
 import uk.co.senab.photoview.PhotoView;
