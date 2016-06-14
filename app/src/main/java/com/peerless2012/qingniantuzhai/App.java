@@ -2,12 +2,9 @@ package com.peerless2012.qingniantuzhai;
 
 import android.app.Application;
 import android.os.Build;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
-import com.peerless2012.common.imgcache.ImageCacheManager;
 import com.peerless2012.qingniantuzhai.utils.FileUtils;
 import java.io.File;
 
@@ -56,12 +53,6 @@ public class App extends Application{
      * 初始化图片缓存管理器
      */
     private void initImageCacheManager() {
-        if (!ImageLoader.getInstance().isInited()) {
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
-            ImageLoader.getInstance().init(config);
-        }
-
-
         StringBuffer sb = new StringBuffer();
         File externalCacheDir = getExternalFilesDir(null);
         if (externalCacheDir != null) {
@@ -71,6 +62,5 @@ public class App extends Application{
         }
         String path = sb.toString();
         File diskCacheDir = FileUtils.createDir(path);
-        ImageCacheManager.getInstance().init(getApplicationContext(), diskCacheDir);
     }
 }

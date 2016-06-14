@@ -4,15 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
-import com.peerless2012.common.imgcache.ImageCacheManager;
+import com.bumptech.glide.Glide;
 import com.peerless2012.qingniantuzhai.R;
 import com.peerless2012.qingniantuzhai.interfaces.IOnItemClickListener;
 import com.peerless2012.qingniantuzhai.model.ArticleItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +17,6 @@ import java.util.List;
  * Created by Administrator on 2016/1/19.
  */
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ArticleListHolder>{
-
-    private ImageLoader imageLoader;
     private List<ArticleItem> articleItems;
     private IOnItemClickListener listener;
     private OnRecycleItemClickListener recycleItemClickListener = new OnRecycleItemClickListener();
@@ -53,9 +48,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     public ArticleListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater;
             layoutInflater = LayoutInflater.from(parent.getContext());
-        if (imageLoader == null) {
-            imageLoader = ImageCacheManager.getInstance().getImageLoader();
-        }
         return new ArticleListHolder(layoutInflater.inflate(R.layout.item_home_article_list,parent,false));
     }
 
@@ -76,17 +68,19 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     public void onBindViewHolder(ArticleListHolder holder, int position) {
         ArticleItem articleItem = articleItems.get(position);
         holder.articleTitle.setText(articleItem.getTitle());
-        holder.articlePreViewImg.setImageUrl(articleItem.getPreviewImgUrl(), imageLoader);
+        Glide.with(holder.articlePreViewImg.getContext())
+                .load(articleItem.getPreviewImgUrl())
+                .into(holder.articlePreViewImg);
         holder.itemView.setOnClickListener(recycleItemClickListener);
         holder.itemView.setTag(R.id.home_adapter_position_tag,position);
     }
 
     class ArticleListHolder extends RecyclerView.ViewHolder{
-        public NetworkImageView articlePreViewImg;
+        public ImageView articlePreViewImg;
         public TextView articleTitle;
         public ArticleListHolder(View itemView) {
             super(itemView);
-            articlePreViewImg = (NetworkImageView) itemView.findViewById(R.id.article_preview_img);
+            articlePreViewImg = (ImageView) itemView.findViewById(R.id.article_preview_img);
             articleTitle = (TextView) itemView.findViewById(R.id.article_tile);
         }
     }

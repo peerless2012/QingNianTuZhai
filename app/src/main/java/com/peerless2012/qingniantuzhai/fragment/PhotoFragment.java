@@ -8,12 +8,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
 import com.peerless2012.qingniantuzhai.activity.DetailActivity;
 import com.peerless2012.qingniantuzhai.model.ArticleDetail;
-import com.peerless2012.qingniantuzhai.model.ArticleItem;
-
 import uk.co.senab.photoview.PhotoView;
 
 /**
@@ -46,7 +43,7 @@ public class PhotoFragment extends BaseFragment{
             }
         });
         ArticleDetail articleDetail = getArguments().getParcelable(ARTICLE_DETAIL);
-        ImageLoader.getInstance().displayImage(articleDetail.getImg(), photoView);
+        Glide.with(this).load(articleDetail.getImg()).into(photoView);
         return photoView;
     }
 

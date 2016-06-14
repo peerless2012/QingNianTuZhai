@@ -18,7 +18,7 @@
               android:layout_height="120dp"
               android:foreground="?android:attr/selectableItemBackground">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:src="@drawable/loading_01"
         android:id="@+id/article_preview_img"
         android:layout_gravity="center_vertical"
