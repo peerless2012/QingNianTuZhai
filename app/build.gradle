@@ -10,9 +10,28 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
+
+    signingConfigs {
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('D:/develop/debug.keystore')
+            storePassword 'android'
+        }
         release {
+            keyAlias 'peerless2012'
+            keyPassword '-wzm-peerless2012-android-'
+            storeFile file('D:/develop/peerless2012.jks')
+            storePassword '-wzm-peerless2012-android-'
+        }
+    }
+
+    buildTypes {
+        debug {
             minifyEnabled false
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
