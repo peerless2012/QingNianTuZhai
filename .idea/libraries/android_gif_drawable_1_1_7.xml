@@ -10,7 +10,6 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/../../AndroidSdk/gradle-2.13-rc-1/caches/modules-2/files-2.1/pl.droidsonroids.gif/android-gif-drawable/1.1.7/e9b9c2b6bab01c1a73edf35721f1076d4cc22d02/android-gif-drawable-1.1.7-sources.jar!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/pl.droidsonroids.gif/android-gif-drawable/1.1.7/e9b9c2b6bab01c1a73edf35721f1076d4cc22d02/android-gif-drawable-1.1.7-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
