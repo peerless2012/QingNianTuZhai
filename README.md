@@ -2,7 +2,7 @@
 青年图摘的Android版本(使用RxAndroid,Retrofit,jsoup等技术)
 
 ## 下载地址
-[点我下载](https://raw.githubusercontent.com/peerless2012/QingNianTuZhai/master/release/QingNianTuZhai.apk)
+[点我下载](https://raw.githubusercontent.com/peerless2012/QingNianTuZhai/master/release/QingNianTuZhai-release.apk)
 
 ## 效果
 
