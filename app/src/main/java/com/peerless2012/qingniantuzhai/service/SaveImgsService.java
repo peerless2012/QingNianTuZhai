@@ -98,7 +98,7 @@ public class SaveImgsService extends Service{
         cacheDir = ((App)getApplication()).getAppCacheDir();
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
             saveDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            saveDir = new File(cacheDir,"QingNianTuZhai");
+            saveDir = new File(saveDir,"QingNianTuZhai");
         }
         mDownloadBinder = new DownloadBinder();
         mExecutorService = Executors.newFixedThreadPool(1);
