@@ -18,12 +18,6 @@ android {
             storeFile file('D:/develop/debug.keystore')
             storePassword 'android'
         }
-        release {
-            keyAlias 'peerless2012'
-            keyPassword '-wzm-peerless2012-android-'
-            storeFile file('D:/develop/peerless2012.jks')
-            storePassword '-wzm-peerless2012-android-'
-        }
     }
 
     buildTypes {
