@@ -11,27 +11,56 @@ android {
         versionName "1.0"
     }
 
+    // 移除lint检查的error
+    lintOptions {
+        abortOnError false
+    }
+
     signingConfigs {
+        def Properties localProps = new Properties()
+        localProps.load(new FileInputStream(file('../local.properties')))
+        def Properties debugKeyProps = new Properties()
+        def Properties releaseKeyProps = new Properties()
+
+        // 如果读取不到'keystore.props.file'属性，就使用debug keystore
+        debugKeyProps.load(new FileInputStream(file(localProps['debugkeystore.props.file'])))
+        releaseKeyProps.load(new FileInputStream(file(localProps['releasekeystore.props.file'])))
+
+
         debug {
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('D:/develop/debug.keystore')
-            storePassword 'android'
+            assert localProps['debugkeystore.props.file'];
+            storeFile file(debugKeyProps["store"])
+            keyAlias debugKeyProps["alias"]
+            storePassword debugKeyProps["storePass"]
+            keyPassword debugKeyProps["pass"]
+        }
+
+        release {
+            // release版本使用assert确保存在该属性否则报错，避免错误打包
+            assert localProps['releasekeystore.props.file'];
+            storeFile file(releaseKeyProps["store"])
+            keyAlias releaseKeyProps["alias"]
+            storePassword releaseKeyProps["storePass"]
+            keyPassword releaseKeyProps["pass"]
         }
     }
 
     buildTypes {
         debug {
             minifyEnabled false
+            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+    productFlavors {
     }
 }
 
@@ -42,8 +71,8 @@ dependencies {
     compile rootProject.ext.libSupportDesign
     compile rootProject.ext.libSupportCardView
     //compile 'com.android.support:appcompat-v7:23.2.0'
-//    compile 'com.android.support:cardview-v7:23.2.0'
-//    compile 'com.android.support:design:23.2.0'
+    //    compile 'com.android.support:cardview-v7:23.2.0'
+    //    compile 'com.android.support:design:23.2.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
@@ -67,10 +96,7 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
     //下拉刷新和上拉加载更多,如果只需要下拉刷新,则直接用官方的就可以了
     compile 'com.cjj.materialrefeshlayout:library:1.3.0'
-
     // 使用glide加载图片，内部使用OkHttp请求
     //compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
-
 }
