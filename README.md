@@ -8,7 +8,7 @@
 
 ### 最终效果
 <div align="center">
-	<img src="https://raw.githubusercontent.com/peerless2012/QingNianTuZhai/master/imgs/screen_gif.gif" width = "360" height = "640" alt="最终动图" align=center />
+	<img src="https://raw.githubusercontent.com/peerless2012/QingNianTuZhai/master/imgs/screen_gif.gif" alt="最终动图" align=center />
 </div>
 
 ### 主页
